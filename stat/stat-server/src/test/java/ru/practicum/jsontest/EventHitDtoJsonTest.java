@@ -1,11 +1,12 @@
 package ru.practicum.jsontest;
 
+import jakarta.annotation.PostConstruct;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.json.JsonTest;
 import org.springframework.boot.test.json.JacksonTester;
+import org.springframework.core.env.Environment;
 import ru.practicum.EventHitDto;
 
 import java.time.LocalDateTime;
@@ -19,10 +20,14 @@ class EventHitDtoJsonTest {
     @Autowired
     private JacksonTester<EventHitDto> json;
 
+    @Autowired
+    private Environment environment;
+
     private DateTimeFormatter formatter;
 
-    @Value("${explore-with-me.datetime.format}")
-    public void setFormatter(String dateTimeFormat) {
+    @PostConstruct
+    void setup() {
+        String dateTimeFormat = environment.getProperty("explore-with-me.datetime.format");
         this.formatter = DateTimeFormatter.ofPattern(dateTimeFormat);
     }
 
@@ -132,7 +137,7 @@ class EventHitDtoJsonTest {
     void shouldSerializeAllFieldsCorrectly() throws Exception {
         // Given
         LocalDateTime timestamp = LocalDateTime.of(2024, 8, 20, 12, 0, 0);
-                EventHitDto eventHit = EventHitDto.builder()
+        EventHitDto eventHit = EventHitDto.builder()
                 .app("integration-test")
                 .uri("/api/v1/events/123")
                 .ip("172.16.0.1")
