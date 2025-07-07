@@ -38,8 +38,7 @@ class EventHitDtoJsonTest {
                 .build();
 
         // When & Then
-        assertThat(json.write(eventHit)).isStrictlyEqualToJson("""
-                {
+        assertThat(json.write(eventHit)).isStrictlyEqualToJson("{" + """
                     "app": "main-service",
                     "uri": "/events/1",
                     "ip": "192.168.1.1",
@@ -52,8 +51,7 @@ class EventHitDtoJsonTest {
     void shouldDeserializeEventHitDto() throws Exception {
         // Given
         LocalDateTime timestamp = LocalDateTime.of(2024, 7, 15, 14, 30, 45);
-        String jsonContent = """
-                {
+        String jsonContent = "{" + """
                     "app": "main-service",
                     "uri": "/events/1",
                     "ip": "192.168.1.1",
@@ -92,8 +90,7 @@ class EventHitDtoJsonTest {
     void shouldDeserializeWithSpecialCharacters() throws Exception {
         // Given
         LocalDateTime timestamp = LocalDateTime.of(2024, 1, 1, 0, 0, 0);
-        String jsonContent = """
-                {
+        String jsonContent = "{" + """
                     "app": "test-app",
                     "uri": "/events/search?query=test&sort=date",
                     "ip": "127.0.0.1",
@@ -115,8 +112,7 @@ class EventHitDtoJsonTest {
     void shouldDeserializeTimestampCorrectly() throws Exception {
         // Given
         LocalDateTime timestamp = LocalDateTime.of(2024, 3, 15, 16, 45, 22);
-        String jsonContent = """
-                {
+        String jsonContent = "{" + """
                     "app": "web-app",
                     "uri": "/",
                     "ip": "203.0.113.1",
