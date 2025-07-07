@@ -19,11 +19,13 @@
         <dependency>
             <groupId>ru.practicum</groupId>
             <artifactId>stat-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
+            <version>3.5.3</version>
         </dependency>
 
     </dependencies>
