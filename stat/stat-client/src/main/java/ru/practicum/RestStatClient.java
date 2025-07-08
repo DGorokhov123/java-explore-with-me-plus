@@ -42,7 +42,7 @@ public class RestStatClient implements StatClient {
                     .retrieve()
                     .toBodilessEntity();
         } catch (RestClientException e) {
-            log.error("Не удалось отправить статистику: {}", e.getMessage());
+            log.error("Не удалось сохранить информацию о запросе к эндпоинту: {}", e.getMessage());
         }
     }
 
@@ -69,7 +69,7 @@ public class RestStatClient implements StatClient {
                     .body(new ParameterizedTypeReference<Collection<EventStatsResponseDto>>() {
                     });
         } catch (RestClientException e) {
-            log.error("Не удалось отправить статистику: {}", e.getMessage());
+            log.error("Не удалось получить статистику по посещениям: {}", e.getMessage());
             return Collections.emptyList();
         }
     }
