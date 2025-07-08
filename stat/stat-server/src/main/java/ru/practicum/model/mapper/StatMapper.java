@@ -1,5 +1,6 @@
 package ru.practicum.model.mapper;
 
+import ru.practicum.EventHitDto;
 import ru.practicum.model.Stat;
 
 public class StatMapper {
@@ -7,7 +8,7 @@ public class StatMapper {
     private StatMapper() {
     }
 
-    public static Stat toStat(StatDto statDto) {
+    public static Stat toStat(EventHitDto statDto) {
 
         return Stat.builder()
                 .app(statDto.getApp())
@@ -17,8 +18,8 @@ public class StatMapper {
                 .build();
     }
 
-    public static StatDto toStatDto(Stat stat) {
-        return StatDto.builder()
+    public static EventHitDto toEventHitDto(Stat stat) {
+        return EventHitDto.builder()
                 .app(stat.getApp())
                 .uri(stat.getUri())
                 .ip(stat.getIp())

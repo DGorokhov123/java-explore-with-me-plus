@@ -1,10 +1,8 @@
 package ru.practicum.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.Id;
 
 import java.time.LocalDateTime;
@@ -15,22 +13,24 @@ import java.time.LocalDateTime;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@Table(name = "stat")
 public class Stat {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long statId;
+    long statId;
 
     @Column(name = "app")
-    private String app;
+    String app;
 
     @Column(name = "ip")
-    private String ip;
+    String ip;
 
     @Column(name = "time_stamp")
-    private LocalDateTime timestamp;
+    LocalDateTime timestamp;
 
     @Column(name = "uri")
-    private String uri;
+    String uri;
 }

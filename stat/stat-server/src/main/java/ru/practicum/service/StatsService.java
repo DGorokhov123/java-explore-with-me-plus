@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface StatsService {
 
-    void hit(EventHitDto eventHitDto);
+    EventHitDto hit(EventHitDto eventHitDto);
 
     Collection<EventStatsResponseDto> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, boolean isUnique);
 
