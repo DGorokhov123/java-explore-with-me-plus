@@ -23,11 +23,10 @@ public class StatsServiceImpl implements StatsService {
     private final StatServiceRepository statServiceRepository;
 
     @Transactional
-    public EventHitDto hit(EventHitDto eventHitDto) {
+    public void hit(EventHitDto eventHitDto) {
         log.info("Hit - invoked");
-        Stat stat = statServiceRepository.save(toStat(eventHitDto));
+        Stat stat = statServiceRepository.save(INSTANCE.toStat(eventHitDto));
         log.info("Hit - stat saved successfully - {}", stat);
-        return toEventHitDto(stat);
     }
 
     @Override
