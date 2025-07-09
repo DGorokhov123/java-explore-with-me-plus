@@ -4,14 +4,13 @@ package ru.practicum;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.ComponentScan;
 import ru.practicum.ewm.client.StatClient;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
 
 @SpringBootApplication
-@ComponentScan({"ru.practicum.ewm.client"})
+//@ComponentScan({"ru.practicum.ewm.client"})
 public class Main {
     public static void main(String[] args) {
         LocalDateTime now = LocalDateTime.now();
@@ -23,6 +22,7 @@ public class Main {
                 .build();
         LocalDateTime start = LocalDateTime.now().minusDays(1);
         LocalDateTime end = LocalDateTime.now().plusDays(1);
+
         ApplicationContext context = SpringApplication.run(Main.class, args);
         StatClient statClient = context.getBean(StatClient.class);
 
