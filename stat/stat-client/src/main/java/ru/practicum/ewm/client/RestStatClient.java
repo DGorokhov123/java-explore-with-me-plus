@@ -1,5 +1,6 @@
-package ewm.client;
+package ru.practicum.ewm.client;
 
+import jakarta.annotation.PostConstruct;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,7 @@ import ru.practicum.EventHitDto;
 import ru.practicum.EventStatsResponseDto;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -26,10 +28,18 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 public class RestStatClient implements StatClient {
     RestClient restClient;
     String statUrl;
+    static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    @Autowired
-    public RestStatClient(RestClient restClient, @Value("${explore-with-me.stat-server.url}") String statUrl) {
-        this.restClient = restClient;
+    @PostConstruct
+    public void init() {
+        System.out.println(statUrl);
+    }
+
+    public RestStatClient(@Value("${explore-with-me.stat-server.url}") String statUrl) {
+        this.restClient = RestClient
+                .builder()
+                .baseUrl(statUrl)
+                .build();
         this.statUrl = statUrl;
     }
 
@@ -38,7 +48,7 @@ public class RestStatClient implements StatClient {
         try {
             restClient
                     .post()
-                    .uri(statUrl + "/hit")
+                    .uri("/hit")
                     .body(eventHitDto)
                     .contentType(APPLICATION_JSON)
                     .retrieve()
@@ -51,9 +61,9 @@ public class RestStatClient implements StatClient {
     @Override
     public Collection<EventStatsResponseDto> stats(LocalDateTime start, LocalDateTime end, List<String> uris, Boolean unique) {
         try {
-            UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(statUrl + "/stats")
-                    .queryParam("start", start)
-                    .queryParam("end", end);
+            UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString("/stats")
+                    .queryParam("start", start.format(formatter))
+                    .queryParam("end", end.format(formatter));
 
             if (uris != null && !uris.isEmpty()) {
                 uriBuilder.queryParam("uris", String.join(",", uris));

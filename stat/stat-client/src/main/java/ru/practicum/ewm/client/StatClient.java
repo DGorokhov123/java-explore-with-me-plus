@@ -1,5 +1,4 @@
-package ewm.client;
-
+package ru.practicum.ewm.client;
 
 import ru.practicum.EventHitDto;
 import ru.practicum.EventStatsResponseDto;
