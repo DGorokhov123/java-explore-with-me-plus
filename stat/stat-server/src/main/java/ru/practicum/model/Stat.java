@@ -3,7 +3,7 @@ package ru.practicum.model;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.annotation.Id;
+
 
 import java.time.LocalDateTime;
 
@@ -20,7 +20,7 @@ public class Stat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    long statId;
+    Long statId;
 
     @Column(name = "app", nullable = false)
     String app;

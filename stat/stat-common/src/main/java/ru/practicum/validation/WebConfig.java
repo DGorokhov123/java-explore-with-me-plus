@@ -17,5 +17,4 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addConverter(stringToLocalDateTimeConverter);
         registry.addConverter(stringToBooleanConverter);
     }
-
 }

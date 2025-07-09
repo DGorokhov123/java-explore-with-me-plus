@@ -1,4 +1,4 @@
-package ru.practicum;
+package ewm.client;
 
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.util.UriComponentsBuilder;
+import ru.practicum.EventHitDto;
+import ru.practicum.EventStatsResponseDto;
 
 import java.time.LocalDateTime;
 import java.util.Collection;

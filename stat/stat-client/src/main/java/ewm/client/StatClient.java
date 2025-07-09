@@ -1,5 +1,8 @@
-package ru.practicum;
+package ewm.client;
 
+
+import ru.practicum.EventHitDto;
+import ru.practicum.EventStatsResponseDto;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
