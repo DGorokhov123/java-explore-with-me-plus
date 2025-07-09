@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-
 import java.time.LocalDateTime;
 
 @Data
@@ -22,15 +21,15 @@ public class Stat {
     @Column(name = "id")
     Long statId;
 
-    @Column(name = "app", nullable = false)
+    @Column(name = "app", nullable = false, length = 50)
     String app;
 
-    @Column(name = "ip", nullable = false)
+    @Column(name = "ip", nullable = false, length = 15)
     String ip;
 
     @Column(name = "time_stamp", nullable = false)
     LocalDateTime timestamp;
 
-    @Column(name = "uri", nullable = false)
+    @Column(name = "uri", nullable = false, length = 50)
     String uri;
 }

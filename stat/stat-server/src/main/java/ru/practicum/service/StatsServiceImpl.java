@@ -7,13 +7,12 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.EventHitDto;
 import ru.practicum.EventStatsResponseDto;
 import ru.practicum.model.Stat;
+import ru.practicum.model.mapper.StatMapper;
 import ru.practicum.repository.StatServiceRepository;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
-
-import static ru.practicum.model.mapper.StatMapper.*;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +24,7 @@ public class StatsServiceImpl implements StatsService {
     @Transactional
     public void hit(EventHitDto eventHitDto) {
         log.info("Hit - invoked");
-        Stat stat = statServiceRepository.save(INSTANCE.toStat(eventHitDto));
+        Stat stat = statServiceRepository.save(StatMapper.INSTANCE.toStat(eventHitDto));
         log.info("Hit - stat saved successfully - {}", stat);
     }
 
@@ -37,7 +36,7 @@ public class StatsServiceImpl implements StatsService {
             log.error("Error occurred: The start date cannot be later than the end date");
             throw new IllegalArgumentException("The start date cannot be later than the end date");
         }
-        if (uris.isEmpty()) {
+        if (uris == null || uris.isEmpty()) {
             if (isUnique) {
                 log.info("getStats - success - unique = true, uris empty");
                 return statServiceRepository.findAllByTimestampBetweenStartAndEndWithUniqueIp(start, end);
