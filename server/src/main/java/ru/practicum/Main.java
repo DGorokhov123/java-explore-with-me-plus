@@ -8,16 +8,14 @@ import org.springframework.context.annotation.ComponentScan;
 import ru.practicum.ewm.client.StatClient;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Collection;
-import java.util.List;
 
 @SpringBootApplication
 @ComponentScan({"ru.practicum.ewm.client"})
 public class Main {
     public static void main(String[] args) {
         LocalDateTime now = LocalDateTime.now();
-        EventHitDto hit =   EventHitDto.builder()
+        EventHitDto hit = EventHitDto.builder()
                 .app("app1")
                 .uri("/events/2")
                 .ip("192.168.1.2")
