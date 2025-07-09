@@ -1,25 +1,20 @@
 services:
 
-#  stats-server:
-#    build: gateway
-#    image: shareit-gateway
-#    restart: on-failure
-#    container_name: shareit-gateway
-#    ports:
-#      - "9090:9090"
-
-#  stats-db:
-#    image: postgres:16.1
-#
-#  ewm-service:
-#    ports:
-#      - "8080:8080"
-#
-#  ewm-db:
-#    image: postgres:16.1
+  stats-server:
+    build: stat/stat-server
+    image: stat-server
+    container_name: stat-server
+    restart: on-failure
+    ports:
+      - "9090:9090"
+    depends_on:
+      - db-stat
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db-stat:5432/stat_db
 
   db-stat:
     image: postgres:alpine
+    container_name: db-stat
     ports:
       - "5432:5432"
     volumes:
