@@ -1,4 +1,4 @@
-#services:
+services:
 
 #  stats-server:
 #    build: gateway
@@ -17,3 +17,19 @@
 #
 #  ewm-db:
 #    image: postgres:16.1
+
+  db-stat:
+    image: postgres:alpine
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./stat-postgres:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=stat_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=12345
+    healthcheck:
+      test: pg_isready -q -d $$POSTGRES_DB -U $$POSTGRES_USER
+      timeout: 5s
+      interval: 5s
+      retries: 10
