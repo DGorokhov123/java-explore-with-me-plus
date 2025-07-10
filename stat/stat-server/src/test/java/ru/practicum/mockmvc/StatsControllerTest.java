@@ -30,14 +30,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(StatsController.class)
 class StatsControllerTest {
 
-    private String validStartFormat;
-    private String validEndFormat;
-
     private final String invalidDateTimeFormat = "2023-01-01T00:00:00";
     private final String validApp = "ewm-main-service";
     private final String validUri = "/events/1";
     private final String validIp = "192.168.1.1";
-
+    private String validStartFormat;
+    private String validEndFormat;
     @Autowired
     private MockMvc mockMvc;
 

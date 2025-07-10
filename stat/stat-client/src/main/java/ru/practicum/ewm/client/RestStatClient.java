@@ -4,7 +4,6 @@ import jakarta.annotation.PostConstruct;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
@@ -26,14 +25,9 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class RestStatClient implements StatClient {
+    static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     RestClient restClient;
     String statUrl;
-    static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-    @PostConstruct
-    public void init() {
-        System.out.println(statUrl);
-    }
 
     public RestStatClient(@Value("${explore-with-me.stat-server.url}") String statUrl) {
         this.restClient = RestClient
@@ -41,6 +35,11 @@ public class RestStatClient implements StatClient {
                 .baseUrl(statUrl)
                 .build();
         this.statUrl = statUrl;
+    }
+
+    @PostConstruct
+    public void init() {
+        System.out.println(statUrl);
     }
 
     @Override
