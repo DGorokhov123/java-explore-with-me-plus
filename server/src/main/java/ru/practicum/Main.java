@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 
 @SpringBootApplication
-//@ComponentScan({"ru.practicum.ewm.client"})
 public class Main {
     public static void main(String[] args) {
         LocalDateTime now = LocalDateTime.now();
