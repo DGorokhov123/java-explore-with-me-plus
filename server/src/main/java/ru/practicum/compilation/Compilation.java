@@ -20,3 +20,4 @@ public class Compilation {
     private Long id;
 
 }
+
