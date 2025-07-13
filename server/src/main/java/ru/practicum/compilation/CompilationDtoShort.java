@@ -2,6 +2,9 @@ package ru.practicum.compilation;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import ru.practicum.event.EventShortDto;
+
+import java.util.List;
 
 @Data
 @Builder
@@ -10,7 +13,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CompilationDtoShort {
 
-    List<EventDtoShort> events;
+    List<EventShortDto> events;
 
     Long id;
 

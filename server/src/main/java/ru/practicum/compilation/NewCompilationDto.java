@@ -14,7 +14,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CompilationDtoNew {
+public class NewCompilationDto {
 
     Set<Long> events = new HashSet<>();
 
