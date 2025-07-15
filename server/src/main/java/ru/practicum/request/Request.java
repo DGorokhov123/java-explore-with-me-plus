@@ -5,6 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.practicum.event.Event;
+import ru.practicum.user.User;
+
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -18,5 +22,19 @@ public class Request {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "requester_id")
+    private User requester;
+
+    @ManyToOne
+    @JoinColumn(name = "event_id")
+    private Event event;
+
+    @Column(name = "status")
+    private ParticipationRequestStatus status;
+
+    @Column(name = "created_at")
+    private LocalDateTime created;
 
 }
