@@ -1,15 +1,40 @@
 package ru.practicum.compilation;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
+import lombok.experimental.UtilityClass;
+import ru.practicum.event.EventMapper;
+import ru.practicum.event.EventShortDto;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-    @Mapper(componentModel = "spring")
-    public interface CompilationMapper {
-        CompilationMapper INSTANCE = Mappers.getMapper(CompilationMapper.class);
+@UtilityClass
+public class CompilationMapper {
 
-        CompilationDto toCompilationDto(Compilation compilation);
-
-        List<CompilationDto> toCompilationDtoList(List<Compilation> compilations);
+    public CompilationDto toCompilationsDtoFromCompilation(Compilation compilation) {
+        return CompilationDto.builder()
+                .events(EventMapper.toListEventShortDto(EventMapper.toListEventShort(new ArrayList<>(compilation.getEvents()))))
+                .id(compilation.getId())
+                .pinned(compilation.getPinned())
+                .title(compilation.getTitle())
+                .build();
     }
+
+    public static CompilationDto toCompilationDto(Compilation compilation) {
+        List<EventShortDto> eventShortDtoList = compilation.getEvents().stream()
+                .map(EventMapper::toEventShortDto)
+                .collect(Collectors.toList());
+        return CompilationDto.builder()
+                .id(compilation.getId())
+                .pinned(compilation.getPinned())
+                .title(compilation.getTitle())
+                .events(eventShortDtoList)
+                .build();
+    }
+
+    public static List<CompilationDto> toCompilationDtoList(List<Compilation> compilations) {
+        return compilations.stream()
+                .map(CompilationMapper::toCompilationDto)
+                .collect(Collectors.toList());
+    }
+}
