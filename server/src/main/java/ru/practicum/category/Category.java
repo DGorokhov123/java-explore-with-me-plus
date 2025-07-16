@@ -1,6 +1,8 @@
 package ru.practicum.category;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 @Data
@@ -17,6 +19,8 @@ public class Category {
     private Long id;
 
     @Column(name = "cat_name")
+    @Size(min = 1, max = 50)
+    @NotEmpty
     private String name;
 
     @Override

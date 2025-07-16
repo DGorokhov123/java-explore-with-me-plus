@@ -20,7 +20,6 @@ public class CategoryAdminController {
     private final CategoryAdminService categoryAdminService;
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<CategoryDto> addCategory(@RequestBody @Validated(CreateOrUpdateValidator.Create.class)
                                                    CategoryDto requestCategory, BindingResult bindingResult) {
         log.info("Calling the POST request to /admin/categories endpoint");
@@ -34,7 +33,6 @@ public class CategoryAdminController {
     }
 
     @DeleteMapping("/{catId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<String> deleteCategories(@PathVariable @Positive Long catId) {
         log.info("Calling the DELETE request to /admin/categories/{catId} endpoint");
         categoryAdminService.deleteCategory(catId);

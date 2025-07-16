@@ -1,6 +1,8 @@
 package ru.practicum.compilation;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import ru.practicum.event.Event;
@@ -25,7 +27,9 @@ public class Compilation {
     Boolean pinned;
 
     @Column(name = "title")
-    String title;
+    @Size(min = 1, max = 50)
+    @NotEmpty
+    private String title;
 
     @ManyToMany
     @JoinTable(name = "compilations_events",

@@ -27,9 +27,6 @@ public class CompilationAdminServiceImpl implements CompilationAdminService {
     @Override
     public CompilationDto createCompilation(NewCompilationDto request) {
         log.info("createCompilation - invoked");
-        if (compilationRepository.existsByTitle(request.getTitle())) {
-            throw new ConflictException("Title not unique");
-        }
         Set<Event> events;
         events = (request.getEvents() != null && request.getEvents().size() != 0) ?
                 new HashSet<>(eventRepository.findAllById(request.getEvents())) : new HashSet<>();

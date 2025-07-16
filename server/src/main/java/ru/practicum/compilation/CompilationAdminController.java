@@ -18,7 +18,6 @@ public class CompilationAdminController {
     private final CompilationAdminService service;
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<CompilationDto> postCompilations(@RequestBody @Validated(CreateOrUpdateValidator.Create.class) NewCompilationDto newCompilationDto) {
         log.info("Calling the POST request to /admin/compilations endpoint");
         return ResponseEntity
@@ -27,7 +26,6 @@ public class CompilationAdminController {
     }
 
     @DeleteMapping("/{compId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<String> deleteCompilation(@PathVariable Long compId) {
         log.info("Calling the DELETE request to /admin/endpoint/{compId}");
         service.deleteCompilation(compId);

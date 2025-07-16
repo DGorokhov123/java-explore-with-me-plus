@@ -1,6 +1,7 @@
 package ru.practicum.compilation;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -18,6 +19,7 @@ public class NewCompilationDto {
 
     Set<Long> events = new HashSet<>();
 
+    @NotNull
     Boolean pinned;
 
     @NotBlank(groups = {CreateOrUpdateValidator.Create.class})

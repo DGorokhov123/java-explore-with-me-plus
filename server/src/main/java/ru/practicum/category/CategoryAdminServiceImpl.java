@@ -30,15 +30,9 @@ public class CategoryAdminServiceImpl implements CategoryAdminService {
             log.error("Category name not unique {}", requestCategory.getName());
             throw new ConflictException("Category with this name already exists");
         }
-        try {
-            Category result = categoryRepository.saveAndFlush(CategoryMapper.toCategories(requestCategory));
-            log.info("Result: category - {} - saved", result.getName());
-            return CategoryMapper.toCategoryDto(result);
-        }
-        catch (DataIntegrityViolationException e) {
-            log.error("Category already exist = {}", requestCategory);
-            throw new ConflictException("Category with name " + requestCategory.getName() + " already exits");
-        }
+        Category result = categoryRepository.saveAndFlush(CategoryMapper.toCategories(requestCategory));
+        log.info("Result: category - {} - saved", result.getName());
+        return CategoryMapper.toCategoryDto(result);
     }
 
     @Override
@@ -51,9 +45,6 @@ public class CategoryAdminServiceImpl implements CategoryAdminService {
         }
         if (eventRepository.existsByCategoryId(catId)) {
             throw new ConflictException("Can't delete a category with associated events");
-        }
-        if (!categoryRepository.existsById(catId)) {
-            throw new NotFoundException("Category does not exist");
         }
         log.info("Result: category with id - {} - deleted", catId);
         categoryRepository.deleteById(catId);
