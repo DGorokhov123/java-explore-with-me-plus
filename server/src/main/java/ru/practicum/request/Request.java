@@ -31,6 +31,7 @@ public class Request {
     @JoinColumn(name = "event_id")
     private Event event;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private ParticipationRequestStatus status;
 
