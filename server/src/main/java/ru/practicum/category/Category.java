@@ -2,10 +2,8 @@ package ru.practicum.category;
 
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.FieldDefaults;
 
-@Getter
-@Setter
+@Data
 @Builder
 @Entity
 @AllArgsConstructor
