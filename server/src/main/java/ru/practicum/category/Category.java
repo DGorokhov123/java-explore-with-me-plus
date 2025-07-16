@@ -1,16 +1,15 @@
 package ru.practicum.category;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
+import lombok.*;
 
 @Data
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "categories")
 public class Category {
 
@@ -19,4 +18,16 @@ public class Category {
     @Column(name = "id")
     private Long id;
 
+    @Column(name = "cat_name")
+    @Size(min = 1, max = 50)
+    @NotEmpty
+    private String name;
+
+    @Override
+    public String toString() {
+        return "Categories{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
