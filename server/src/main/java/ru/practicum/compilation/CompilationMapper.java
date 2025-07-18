@@ -2,7 +2,7 @@ package ru.practicum.compilation;
 
 import lombok.experimental.UtilityClass;
 import ru.practicum.event.EventMapper;
-import ru.practicum.event.EventShortDto;
+import ru.practicum.event.dto.EventShortDto;
 
 import java.util.ArrayList;
 import java.util.List;
