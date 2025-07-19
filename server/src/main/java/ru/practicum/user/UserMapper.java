@@ -17,4 +17,10 @@ public class UserMapper {
                 .build();
     }
 
+    public static UserShortDto toUserShortDto(User owner) {
+        return UserShortDto.builder()
+                .id(owner.getId())
+                .name(owner.getName())
+                .build();
+    }
 }

@@ -1,4 +1,4 @@
-package ru.practicum.event;
+package ru.practicum.event.dto;
 
 public enum State {
     PENDING, PUBLISHED, CANCELED

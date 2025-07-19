@@ -1,10 +1,12 @@
-package ru.practicum.event;
+package ru.practicum.event.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import ru.practicum.category.Category;
+import ru.practicum.event.dto.Location;
+import ru.practicum.event.dto.State;
 import ru.practicum.user.User;
 
 import java.time.LocalDateTime;

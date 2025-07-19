@@ -5,11 +5,12 @@ import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import ru.practicum.category.CategoryDto;
 import ru.practicum.user.UserShortDto;
 
 import java.time.LocalDateTime;
-
+@AllArgsConstructor
 public class EventShortDto {
 
     Long id;

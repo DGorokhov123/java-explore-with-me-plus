@@ -9,7 +9,6 @@ import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
-import ru.practicum.event.Location;
 
 import java.time.LocalDateTime;
 

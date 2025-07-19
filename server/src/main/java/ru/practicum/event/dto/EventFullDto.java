@@ -1,12 +1,18 @@
 package ru.practicum.event.dto;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.experimental.FieldDefaults;
 import ru.practicum.category.CategoryDto;
-import ru.practicum.event.Location;
-import ru.practicum.event.State;
 import ru.practicum.user.UserShortDto;
 
 import java.time.LocalDateTime;
 
+
+@Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@AllArgsConstructor
 public class EventFullDto {
 
 
