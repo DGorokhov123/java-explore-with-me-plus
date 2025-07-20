@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.event.Event;
 import ru.practicum.event.EventRepository;
-import ru.practicum.exception.ConflictException;
 import ru.practicum.exception.NotFoundException;
 
 import java.util.HashSet;
@@ -28,7 +27,7 @@ public class CompilationAdminServiceImpl implements CompilationAdminService {
     public CompilationDto createCompilation(NewCompilationDto request) {
         log.info("createCompilation - invoked");
         Set<Event> events;
-        events = (request.getEvents() != null && request.getEvents().size() != 0) ?
+        events = (request.getEvents() != null && !request.getEvents().isEmpty()) ?
                 new HashSet<>(eventRepository.findAllById(request.getEvents())) : new HashSet<>();
         Compilation compilation = Compilation.builder()
                 .pinned(request.getPinned() != null && request.getPinned())
