@@ -1,17 +1,5 @@
 services:
 
-  main-server:
-    build: server
-    image: main-server
-    container_name: main-server
-    restart: on-failure
-    ports:
-      - "8080:8080"
-    depends_on:
-      - db-main
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db-main:5433/main_db
-
   stats-server:
     build: stat/stat-server
     image: stat-server
@@ -23,23 +11,6 @@ services:
       - db-stat
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db-stat:5432/stat_db
-
-  db-main:
-    image: postgres:alpine
-    container_name: db-main
-    ports:
-      - "5433:5432"
-    volumes:
-      - ./main-postgres:/var/lib/postgresql/data/
-    environment:
-      - POSTGRES_DB=main_db
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=12345
-    healthcheck:
-      test: pg_isready -q -d $$POSTGRES_DB -U $$POSTGRES_USER
-      timeout: 5s
-      interval: 5s
-      retries: 10
 
   db-stat:
     image: postgres:alpine
