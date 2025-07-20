@@ -1,7 +1,6 @@
 package ru.practicum.event.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import ru.practicum.category.Category;
@@ -29,12 +28,13 @@ public class Event {
     String annotation;
 
     @ManyToOne
-    @NotNull
     @JoinColumn(name = "categories_id")
     Category category;
 
-    @Column(name = "confirmed_requester")
-    Long confirmedRequester;
+
+    @JoinColumn(name = "description")
+    String description;
+
 
     @Column(name = "createdOn")
     LocalDateTime createdOn;
