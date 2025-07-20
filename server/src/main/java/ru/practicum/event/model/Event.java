@@ -21,32 +21,26 @@ public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     Long id;
 
-    @Column(name = "annotation")
+    @Column(name = "annotation", length = 2000, nullable = false)
     String annotation;
 
     @ManyToOne
-    @JoinColumn(name = "categories_id")
+    @JoinColumn(name = "categories_id", nullable = false)
     Category category;
 
-
-    @JoinColumn(name = "description")
-    String description;
-
-
-    @Column(name = "createdOn")
+    @Column(name = "created_on", nullable = false)
     LocalDateTime createdOn;
 
     @ManyToOne
-    @JoinColumn(name = "initiator")
+    @JoinColumn(name = "initiator", nullable = false)
     User user;
 
     @Embedded
     Location location;
 
-    @Column(name = "paid")
+    @Column(name = "paid", nullable = false)
     Boolean paid;
 
     @Column(name = "participant_limit")
@@ -58,17 +52,19 @@ public class Event {
     @Column(name = "request_moderation")
     Boolean requestModeration;
 
+    @Column(name = "description", length = 7000, nullable = false)
+    String description;
+
     @Enumerated(EnumType.STRING)
-    @Column(name = "state")
+    @Column(name = "state", length = 20, nullable = false)
     State state;
 
-    @Column(name = "title")
+    @Column(name = "title", length = 120, nullable = false)
     String title;
 
     @Column(name = "views")
     Long views;
 
-    @Column(name = "event_date")
+    @Column(name = "event_date", nullable = false)
     LocalDateTime eventDate;
-
 }

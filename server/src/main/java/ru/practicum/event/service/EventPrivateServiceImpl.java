@@ -15,9 +15,8 @@ import ru.practicum.event.dto.*;
 import ru.practicum.event.mapper.EventMapper;
 import ru.practicum.event.model.Event;
 import ru.practicum.event.repository.EventRepository;
-import ru.practicum.exception.EntityNotFoundException;
-import ru.practicum.exception.StateException;
-import ru.practicum.exception.TimeException;
+import ru.practicum.exception.ConflictException;
+import ru.practicum.exception.NotFoundException;
 import ru.practicum.request.ParticipationRequestStatus;
 import ru.practicum.user.User;
 import ru.practicum.user.UserMapper;
@@ -54,7 +53,7 @@ public class EventPrivateServiceImpl implements EventPrivateService {
     @Override
     public EventFullDto getEventByUserIdAndEventId(Long userId, Long eventId) {
         Event eventByUserIdAndEventId = eventRepository.findByIdAndInitiator(eventId, userId)
-                .orElseThrow(() -> new EntityNotFoundException(
+                .orElseThrow(() -> new NotFoundException(
                         String.format("Event with id=%d and initiator id=%d not found", eventId, userId)));
         CategoryDto categoryDto = CategoryMapper.toCategoryDto(eventByUserIdAndEventId.getCategory());
         UserShortDto userShortDto = UserMapper.toUserShortDto(eventByUserIdAndEventId.getUser());
@@ -87,14 +86,14 @@ public class EventPrivateServiceImpl implements EventPrivateService {
     public EventFullDto updateEventByUserIdAndEventId(Long userId, Long eventId, UpdateEventUserRequest updateEventUserRequest) {
         existsUser(userId);
         Event event = eventRepository.findByIdAndInitiator(eventId, userId)
-                .orElseThrow(() -> new EntityNotFoundException(
+                .orElseThrow(() -> new NotFoundException(
                         String.format("Event with id=%d and initiator id=%d not found", eventId, userId)));
         if (event.getState() != State.PENDING && event.getState() != State.CANCELED) {
-            throw new StateException("Only pending or canceled events can be changed");
+            throw new ConflictException("Only pending or canceled events can be changed");
         }
         if (updateEventUserRequest.getEventDate() != null &&
                 updateEventUserRequest.getEventDate().isBefore(LocalDateTime.now().plusHours(2))) {
-            throw new TimeException("Event date must be at least 2 hours from now");
+            throw new ConflictException("Event date must be at least 2 hours from now");
         }
         updateFieldsByEvent(updateEventUserRequest, event);
         event.setState(State.PENDING);
@@ -108,7 +107,7 @@ public class EventPrivateServiceImpl implements EventPrivateService {
 
     private void existsUser(Long userId) {
         if (!userRepository.existsById(userId)) {
-            throw new EntityNotFoundException("User with id=" + userId + " not found");
+            throw new NotFoundException("User with id=" + userId + " not found");
         }
     }
 
@@ -119,7 +118,7 @@ public class EventPrivateServiceImpl implements EventPrivateService {
 
         if (newEventDto.getCategory() != null) {
             Category category = categoryRepository.findById(newEventDto.getCategory())
-                    .orElseThrow(() -> new EntityNotFoundException(
+                    .orElseThrow(() -> new NotFoundException(
                             "Category with id=" + newEventDto.getCategory() + " not found"));
             event.setCategory(category);
         }

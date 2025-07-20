@@ -40,5 +40,24 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             LocalDateTime rangeEnd,
             Boolean onlyAvailable,
             Pageable pageable);
+
+
+    @Query("SELECT e FROM Event e " +
+            "WHERE (:users IS NULL OR e.initiator.id IN :users) " +
+            "AND (:states IS NULL OR e.state IN :states) " +
+            "AND (:categories IS NULL OR e.category.id IN :categories) " +
+            "AND (:rangeStart IS NULL OR e.eventDate >= :rangeStart) " +
+            "AND (:rangeEnd IS NULL OR e.eventDate <= :rangeEnd)")
+    List<Event> findEventsByAdminParams(
+            List<Long> users,
+            List<State> states,
+            List<Long> categories,
+            LocalDateTime rangeStart,
+            LocalDateTime rangeEnd,
+            Pageable pageable);
+
+
+    @Query("SELECT COUNT(r) FROM ParticipationRequest r WHERE r.event.id = :eventId AND r.status = 'CONFIRMED'")
+    Long countConfirmedRequests(Long eventId);
 }
 

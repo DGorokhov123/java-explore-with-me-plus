@@ -12,12 +12,14 @@ import ru.practicum.EventHitDto;
 import ru.practicum.category.CategoryMapper;
 import ru.practicum.event.dto.EventFullDto;
 import ru.practicum.event.dto.EventParams;
+import ru.practicum.event.dto.EventShortDto;
 import ru.practicum.event.dto.State;
 import ru.practicum.event.mapper.EventMapper;
 import ru.practicum.event.model.Event;
 import ru.practicum.event.repository.EventRepository;
 import ru.practicum.ewm.client.StatClient;
 import ru.practicum.exception.NotFoundException;
+import ru.practicum.request.ParticipationRequestStatus;
 import ru.practicum.user.UserMapper;
 
 import java.time.LocalDateTime;
@@ -33,7 +35,7 @@ public class EventPublicServiceImpl implements EventPublicService {
     StatClient statClient;
 
     @Override
-    public List<EventFullDto> getAllEventsByParams(EventParams eventParams, HttpServletRequest request) {
+    public List<EventShortDto> getAllEventsByParams(EventParams eventParams, HttpServletRequest request) {
         statClient.hit(EventHitDto.builder()
                 .ip(request.getRemoteAddr())
                 .uri(request.getRequestURI())
@@ -62,11 +64,13 @@ public class EventPublicServiceImpl implements EventPublicService {
                 pageRequest
         );
 
+
         return eventPage.getContent().stream()
-                .map(event -> EventMapper.toEventFullDto(
+                .map(event -> EventMapper.toEventShortDto(
                         event,
                         CategoryMapper.toCategoryDto(event.getCategory()),
-                        UserMapper.toUserShortDto(event.getUser())))
+                        UserMapper.toUserShortDto(event.getUser()),
+                        eventRepository.countByEventIdAndStatus(event.getId(), ParticipationRequestStatus.CONFIRMED)))
                 .collect(Collectors.toList());
     }
 
@@ -88,7 +92,8 @@ public class EventPublicServiceImpl implements EventPublicService {
         return EventMapper.toEventFullDto(
                 event,
                 CategoryMapper.toCategoryDto(event.getCategory()),
-                UserMapper.toUserShortDto(event.getUser()));
+                UserMapper.toUserShortDto(event.getUser()),
+                eventRepository.countByEventIdAndStatus(event.getId(), ParticipationRequestStatus.CONFIRMED));
     }
 
     private org.springframework.data.domain.Sort getSort(ru.practicum.event.dto.Sort sort) {
