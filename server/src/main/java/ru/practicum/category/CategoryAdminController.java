@@ -47,8 +47,10 @@ public class CategoryAdminController {
     }
 
     @PatchMapping("/{catId}")
-    public ResponseEntity<CategoryDto> updateCategory(@PathVariable Long catId,
-                                                      @RequestBody @Validated(CreateOrUpdateValidator.Update.class) CategoryDto categoryDto) {
+    public ResponseEntity<CategoryDto> updateCategory(
+            @PathVariable Long catId,
+            @RequestBody @Validated(CreateOrUpdateValidator.Update.class) CategoryDto categoryDto
+    ) {
         log.info("Calling the PATCH request to /admin/categories/{catId} endpoint");
         return ResponseEntity
                 .status(HttpStatus.OK)

@@ -20,12 +20,12 @@ import static ru.practicum.util.Util.createPageRequestAsc;
 
 public class CategoryPublicServiceImpl implements CategoryPublicService {
 
-    CategoryRepository repository;
+    CategoryRepository categoryRepository;
 
     @Override
     public List<CategoryDto> readAllCategories(Integer from, Integer size) {
         log.info("readAllCategories - invoked");
-        List<Category> cat = repository.findAll(createPageRequestAsc(from, size)).getContent();
+        List<Category> cat = categoryRepository.findAll(createPageRequestAsc(from, size)).getContent();
         log.info("Result: categories size = {}", cat.size());
         return CategoryMapper.toListCategoriesDto(cat);
 
@@ -34,7 +34,7 @@ public class CategoryPublicServiceImpl implements CategoryPublicService {
     @Override
     public CategoryDto readCategoryById(Long catId) {
         log.info("readAllCategories - invoked");
-        Category category = repository.findById(catId).orElseThrow(() -> {
+        Category category = categoryRepository.findById(catId).orElseThrow(() -> {
             log.error("Category with id = {} not exist", catId);
             return new NotFoundException("Category not found");
         });

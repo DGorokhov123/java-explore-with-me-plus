@@ -12,18 +12,6 @@ import java.util.stream.Collectors;
 @UtilityClass
 public class CompilationMapper {
 
-    public CompilationDto toCompilationsDtoFromCompilation(Compilation compilation) {
-        return CompilationDto.builder()
-                .events(compilation.getEvents().stream().map(event ->
-                        EventMapper.toEventShortDto(event, CategoryMapper.toCategoryDto(event.getCategory()),
-                                UserMapper.toUserShortDto(event.getInitiator()))
-                ).collect(Collectors.toList()))
-                .id(compilation.getId())
-                .pinned(compilation.getPinned())
-                .title(compilation.getTitle())
-                .build();
-    }
-
     public static CompilationDto toCompilationDto(Compilation compilation) {
         List<EventShortDto> eventShortDtoList = compilation.getEvents().stream()
                 .map(event ->

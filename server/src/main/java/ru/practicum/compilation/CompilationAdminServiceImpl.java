@@ -27,14 +27,14 @@ public class CompilationAdminServiceImpl implements CompilationAdminService {
     public CompilationDto createCompilation(NewCompilationDto request) {
         log.info("createCompilation - invoked");
         Set<Event> events;
-        events = (request.getEvents() != null && request.getEvents().size() != 0) ?
+        events = (request.getEvents() != null && !request.getEvents().isEmpty()) ?
                 new HashSet<>(eventRepository.findAllById(request.getEvents())) : new HashSet<>();
         Compilation compilation = Compilation.builder()
                 .pinned(request.getPinned() != null && request.getPinned())
                 .title(request.getTitle())
                 .events(events)
                 .build();
-        return CompilationMapper.toCompilationsDtoFromCompilation(compilationRepository.save(compilation));
+        return CompilationMapper.toCompilationDto(compilationRepository.save(compilation));
     }
 
     @Override
@@ -48,22 +48,22 @@ public class CompilationAdminServiceImpl implements CompilationAdminService {
     }
 
     @Override
-    public CompilationDto updateCompilation(Long compId, NewCompilationDto newCompilationDto) {
+    public CompilationDto updateCompilation(Long compId, UpdateCompilationDto updateCompilationDto) {
         log.info("updateCompilation - invoked");
         Compilation compilation = compilationRepository.findById(compId)
                 .orElseThrow(() -> new NotFoundException("Compilation with id " + compId + " not found"));
-        if (newCompilationDto.getTitle() != null) {
-            compilation.setTitle(newCompilationDto.getTitle());
+        if (updateCompilationDto.getTitle() != null) {
+            compilation.setTitle(updateCompilationDto.getTitle());
         }
-        if (newCompilationDto.getPinned() != null) {
-            compilation.setPinned(newCompilationDto.getPinned());
+        if (updateCompilationDto.getPinned() != null) {
+            compilation.setPinned(updateCompilationDto.getPinned());
         }
-        if (newCompilationDto.getEvents() != null) {
-            HashSet<Event> events = new HashSet<>(eventRepository.findAllById(newCompilationDto.getEvents()));
+        if (updateCompilationDto.getEvents() != null && !updateCompilationDto.getEvents().isEmpty()) {
+            HashSet<Event> events = new HashSet<>(eventRepository.findAllById(updateCompilationDto.getEvents()));
             compilation.setEvents(events);
         }
         Compilation updatedCompilation = compilationRepository.save(compilation);
         log.info("Result: compilation with id {} updated ", compId);
-        return CompilationMapper.toCompilationsDtoFromCompilation(updatedCompilation);
+        return CompilationMapper.toCompilationDto(updatedCompilation);
     }
 }
