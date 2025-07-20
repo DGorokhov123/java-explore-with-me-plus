@@ -15,7 +15,7 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
 
     List<Request> findByRequesterId(Long userId);
 
-//    List<Request> findByEventId(Long eventId);
+    List<Request> findByEventId(Long eventId);
 
     @Modifying
     @Query("UPDATE Request r SET r.status = :status WHERE r.id IN :ids")
@@ -24,15 +24,15 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
             @Param("status") ParticipationRequestStatus status
     );
 
-//    @Modifying
-//    @Query("""
-//            UPDATE Request r
-//            SET r.status = 'REJECTED'
-//            WHERE r.event.id = :eventId
-//            AND r.status = 'PENDING'
-//            """)
-//    void setStatusToRejectForAllPending(
-//            @Param("eventId") Long eventId
-//    );
+    @Modifying
+    @Query("""
+            UPDATE Request r
+            SET r.status = 'REJECTED'
+            WHERE r.event.id = :eventId
+            AND r.status = 'PENDING'
+            """)
+    void setStatusToRejectForAllPending(
+            @Param("eventId") Long eventId
+    );
 
 }
