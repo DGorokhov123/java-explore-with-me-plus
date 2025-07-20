@@ -51,11 +51,11 @@ public class EventPrivateServiceImpl implements EventPrivateService {
 
     @Override
     public EventFullDto getEventByUserIdAndEventId(Long userId, Long eventId) {
-        Event eventByUserIdAndEventId = eventRepository.findByIdAndInitiator(eventId, userId)
+        Event eventByUserIdAndEventId = eventRepository.findByIdAndInitiatorId(eventId, userId)
                 .orElseThrow(() -> new EntityNotFoundException(
                         String.format("Event with id=%d and initiator id=%d not found", eventId, userId)));
         CategoryDto categoryDto = CategoryMapper.toCategoryDto(eventByUserIdAndEventId.getCategory());
-        UserShortDto userShortDto = UserMapper.toUserShortDto(eventByUserIdAndEventId.getUser());
+        UserShortDto userShortDto = UserMapper.toUserShortDto(eventByUserIdAndEventId.getInitiator());
         return EventMapper.toEventFullDto(eventByUserIdAndEventId, categoryDto, userShortDto);
     }
 
@@ -68,12 +68,12 @@ public class EventPrivateServiceImpl implements EventPrivateService {
                 size.intValue(),
                 Sort.by("eventDate").descending());
 
-        List<Event> events = eventRepository.findByInitiator(userId, pageable);
+        List<Event> events = eventRepository.findByInitiatorId(userId, pageable);
 
         return events.stream()
                 .map(event -> {
                     CategoryDto categoryDto = CategoryMapper.toCategoryDto(event.getCategory());
-                    UserShortDto userShortDto = UserMapper.toUserShortDto(event.getUser());
+                    UserShortDto userShortDto = UserMapper.toUserShortDto(event.getInitiator());
                     return EventMapper.toEventShortDto(event, categoryDto, userShortDto);
                 })
                 .collect(Collectors.toList());
@@ -82,7 +82,7 @@ public class EventPrivateServiceImpl implements EventPrivateService {
     @Override
     public EventFullDto updateEventByUserIdAndEventId(Long userId, Long eventId, NewEventDto newEventDto) {
         existsUser(userId);
-        Event event = eventRepository.findByIdAndInitiator(eventId, userId)
+        Event event = eventRepository.findByIdAndInitiatorId(eventId, userId)
                 .orElseThrow(() -> new EntityNotFoundException(
                         String.format("Event with id=%d and initiator id=%d not found", eventId, userId)));
         if (event.getState() != State.PENDING && event.getState() != State.CANCELED) {
@@ -96,7 +96,7 @@ public class EventPrivateServiceImpl implements EventPrivateService {
         event.setState(State.PENDING);
         Event updatedEvent = eventRepository.save(event);
         CategoryDto categoryDto = CategoryMapper.toCategoryDto(updatedEvent.getCategory());
-        UserShortDto userShortDto = UserMapper.toUserShortDto(updatedEvent.getUser());
+        UserShortDto userShortDto = UserMapper.toUserShortDto(updatedEvent.getInitiator());
         return EventMapper.toEventFullDto(updatedEvent, categoryDto, userShortDto);
     }
 

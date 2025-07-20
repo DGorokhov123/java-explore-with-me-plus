@@ -41,7 +41,7 @@ public class Event {
 
     @ManyToOne
     @JoinColumn(name = "initiator")
-    User user;
+    User initiator;
 
     @Embedded
     Location location;

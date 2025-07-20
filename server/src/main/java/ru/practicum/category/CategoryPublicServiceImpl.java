@@ -25,7 +25,7 @@ public class CategoryPublicServiceImpl implements CategoryPublicService {
     @Override
     public List<CategoryDto> readAllCategories(Integer from, Integer size) {
         log.info("readAllCategories - invoked");
-        List<Category> cat = repository.findAllCategories(createPageRequestAsc(from, size));
+        List<Category> cat = repository.findAll(createPageRequestAsc(from, size)).getContent();
         log.info("Result: categories size = {}", cat.size());
         return CategoryMapper.toListCategoriesDto(cat);
 

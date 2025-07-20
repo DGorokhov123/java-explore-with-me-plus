@@ -20,8 +20,11 @@ public class CategoryAdminController {
     private final CategoryAdminService categoryAdminService;
 
     @PostMapping
-    public ResponseEntity<CategoryDto> addCategory(@RequestBody @Validated(CreateOrUpdateValidator.Create.class)
-                                                   CategoryDto requestCategory, BindingResult bindingResult) {
+    public ResponseEntity<CategoryDto> addCategory(
+            @RequestBody @Validated(CreateOrUpdateValidator.Create.class)
+            CategoryDto requestCategory,
+            BindingResult bindingResult
+    ) {
         log.info("Calling the POST request to /admin/categories endpoint");
         if (bindingResult.hasErrors()) {
             log.error("Validation error with category name");
@@ -33,7 +36,9 @@ public class CategoryAdminController {
     }
 
     @DeleteMapping("/{catId}")
-    public ResponseEntity<String> deleteCategories(@PathVariable @Positive Long catId) {
+    public ResponseEntity<String> deleteCategories(
+            @PathVariable @Positive Long catId
+    ) {
         log.info("Calling the DELETE request to /admin/categories/{catId} endpoint");
         categoryAdminService.deleteCategory(catId);
         return ResponseEntity
@@ -49,4 +54,5 @@ public class CategoryAdminController {
                 .status(HttpStatus.OK)
                 .body(categoryAdminService.updateCategory(catId, categoryDto));
     }
+
 }

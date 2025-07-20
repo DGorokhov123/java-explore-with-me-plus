@@ -22,7 +22,7 @@ public class EventMapper {
                 .createdOn(LocalDateTime.now())
                 .category(category)
                 .annotation(newEventDto.getAnnotation())
-                .user(owner)
+                .initiator(owner)
                 .location(newEventDto.getLocation())
                 .participantLimit(newEventDto.getParticipantLimit())
                 .requestModeration(newEventDto.getRequestModeration())

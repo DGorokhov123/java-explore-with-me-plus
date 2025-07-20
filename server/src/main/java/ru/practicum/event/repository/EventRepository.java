@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface EventRepository extends JpaRepository<Event, Long> {
-    Optional<Event> findByIdAndInitiator(Long eventId, Long initiatorId);
+    Optional<Event> findByIdAndInitiatorId(Long eventId, Long initiatorId);
 
-    List<Event> findByInitiator(Long initiatorId, org.springframework.data.domain.Pageable pageable);
+    List<Event> findByInitiatorId(Long initiatorId, org.springframework.data.domain.Pageable pageable);
 
     boolean existsByCategoryId(Long catId);
 

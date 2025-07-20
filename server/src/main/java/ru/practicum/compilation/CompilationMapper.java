@@ -6,7 +6,6 @@ import ru.practicum.event.mapper.EventMapper;
 import ru.practicum.event.dto.EventShortDto;
 import ru.practicum.user.UserMapper;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,7 +16,7 @@ public class CompilationMapper {
         return CompilationDto.builder()
                 .events(compilation.getEvents().stream().map(event ->
                         EventMapper.toEventShortDto(event, CategoryMapper.toCategoryDto(event.getCategory()),
-                                UserMapper.toUserShortDto(event.getUser()))
+                                UserMapper.toUserShortDto(event.getInitiator()))
                 ).collect(Collectors.toList()))
                 .id(compilation.getId())
                 .pinned(compilation.getPinned())
@@ -29,7 +28,7 @@ public class CompilationMapper {
         List<EventShortDto> eventShortDtoList = compilation.getEvents().stream()
                 .map(event ->
                         EventMapper.toEventShortDto(event, CategoryMapper.toCategoryDto(event.getCategory()),
-                                UserMapper.toUserShortDto(event.getUser()))
+                                UserMapper.toUserShortDto(event.getInitiator()))
                 ).collect(Collectors.toList());
         return CompilationDto.builder()
                 .id(compilation.getId())
