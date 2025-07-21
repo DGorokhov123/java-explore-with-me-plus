@@ -6,7 +6,6 @@ import lombok.Data;
 public class CommentCountDto {
 
     private Long eventId;
-
     private Long commentCount;
 
     public CommentCountDto(Long eventId, Long commentCount) {

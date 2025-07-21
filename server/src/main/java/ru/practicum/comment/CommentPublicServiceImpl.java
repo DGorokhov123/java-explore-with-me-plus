@@ -1,6 +1,8 @@
 package ru.practicum.comment;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,12 +18,11 @@ import static ru.practicum.util.Util.createPageRequestAsc;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Slf4j
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CommentPublicServiceImpl implements CommentPublicService {
 
-    private final CommentRepository repository;
-
-    private final EventRepository eventRepository;
-
+    CommentRepository repository;
+    EventRepository eventRepository;
 
     @Override
     public CommentDto getComment(Long comId) {

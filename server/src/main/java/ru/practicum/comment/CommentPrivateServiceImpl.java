@@ -28,9 +28,7 @@ import java.util.stream.Collectors;
 public class CommentPrivateServiceImpl implements CommentPrivateService {
 
     CommentRepository repository;
-
     UserRepository userRepository;
-
     EventRepository eventRepository;
 
     @Transactional

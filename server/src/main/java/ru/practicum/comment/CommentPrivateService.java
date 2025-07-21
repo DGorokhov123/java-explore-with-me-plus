@@ -14,6 +14,4 @@ public interface CommentPrivateService {
     CommentDto patchComment(Long userId, Long comId, CommentCreateDto commentCreateDto);
 
     Map<Long, Long> getCommentCount(Collection<Event> list);
-
-    Map<Long, Long> getCommentCount(Collection<Event> list);
 }

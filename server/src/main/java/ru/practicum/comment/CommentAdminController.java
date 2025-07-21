@@ -14,24 +14,24 @@ import java.util.List;
 @Slf4j
 public class CommentAdminController {
 
-    private final CommentAdminService adminCommentService;
+    private final CommentAdminService service;
 
     @GetMapping("/comment/search")
     public ResponseEntity<List<CommentDto>> search(@RequestParam String text) {
         log.info("Calling the GET request to /admin/comment/search endpoint");
-        return ResponseEntity.ok(adminCommentService.search(text));
+        return ResponseEntity.ok(service.search(text));
     }
 
     @GetMapping("users/{userId}/comment")
     public ResponseEntity<List<CommentDto>> get(@PathVariable Long userId) {
         log.info("Calling the GET request to admin/users/{userId}/comment endpoint");
-        return ResponseEntity.ok(adminCommentService.findAllById(userId));
+        return ResponseEntity.ok(service.findAllById(userId));
     }
 
     @DeleteMapping("comment/{comId}")
     public ResponseEntity<String> delete(@PathVariable Long comId) {
         log.info("Calling the GET request to admin/comment/{comId} endpoint");
-        adminCommentService.delete(comId);
+        service.delete(comId);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .body("Comment deleted by admin: " + comId);

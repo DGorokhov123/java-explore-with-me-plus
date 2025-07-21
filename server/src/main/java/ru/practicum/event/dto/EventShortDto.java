@@ -52,4 +52,6 @@ public class EventShortDto {
     @Size(min = 1, max = 999)
     Long views;
 
+    public EventShortDto() {
+    }
 }

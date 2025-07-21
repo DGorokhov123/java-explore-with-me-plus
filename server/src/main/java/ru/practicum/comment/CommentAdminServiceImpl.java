@@ -17,7 +17,6 @@ import java.util.List;
 public class CommentAdminServiceImpl implements CommentAdminService {
 
     CommentRepository repository;
-
     UserRepository userRepository;
 
     @Override

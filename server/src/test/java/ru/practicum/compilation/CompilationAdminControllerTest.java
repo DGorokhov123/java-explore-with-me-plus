@@ -1,6 +1,5 @@
 package ru.practicum.compilation;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -19,11 +18,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.practicum.event.EventShortDto;
 
 import java.util.List;
 import java.util.Set;
 import jakarta.validation.Validator;
+import ru.practicum.event.dto.EventShortDto;
 
 @SpringBootTest
 @AutoConfigureMockMvc

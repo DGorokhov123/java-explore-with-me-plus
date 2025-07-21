@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import ru.practicum.event.Event;
-import ru.practicum.event.EventRepository;
+import ru.practicum.event.model.Event;
+import ru.practicum.event.repository.EventRepository;
 
 class CompilationAdminServiceImplTest {
 

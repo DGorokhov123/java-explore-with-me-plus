@@ -15,7 +15,7 @@ import java.util.List;
 @Slf4j
 public class CommentPublicController {
 
-    private final CommentService service;
+    private final CommentPublicService service;
 
     @GetMapping("/comment/{comId}")
     public ResponseEntity<CommentDto> getById(@PathVariable Long comId) {
