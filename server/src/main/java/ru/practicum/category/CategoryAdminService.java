@@ -1,7 +1,5 @@
 package ru.practicum.category;
 
-import org.springframework.transaction.annotation.Transactional;
-
 public interface CategoryAdminService {
     CategoryDto createCategory(CategoryDto requestCategory);
 

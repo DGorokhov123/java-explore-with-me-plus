@@ -27,7 +27,7 @@ public class CompilationAdminServiceImpl implements CompilationAdminService {
     public CompilationDto createCompilation(NewCompilationDto request) {
         log.info("createCompilation - invoked");
         Set<Event> events;
-        events = (request.getEvents() != null && request.getEvents().size() != 0) ?
+        events = (request.getEvents() != null && !request.getEvents().isEmpty()) ?
                 new HashSet<>(eventRepository.findAllById(request.getEvents())) : new HashSet<>();
         Compilation compilation = Compilation.builder()
                 .pinned(request.getPinned() != null && request.getPinned())
