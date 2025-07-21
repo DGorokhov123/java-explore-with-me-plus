@@ -1,6 +1,6 @@
 package ru.practicum.request;
 
-import ru.practicum.event.Event;
+import ru.practicum.event.model.Event;
 import ru.practicum.request.dto.ParticipationRequestDto;
 import ru.practicum.user.User;
 

@@ -6,8 +6,8 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.event.Event;
-import ru.practicum.event.EventRepository;
+import ru.practicum.event.model.Event;
+import ru.practicum.event.repository.EventRepository;
 import ru.practicum.exception.NotFoundException;
 
 import java.util.HashSet;
