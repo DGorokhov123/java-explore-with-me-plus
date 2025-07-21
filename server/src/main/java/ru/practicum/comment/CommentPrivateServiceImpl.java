@@ -1,0 +1,105 @@
+package ru.practicum.comment;
+
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.event.dto.State;
+import ru.practicum.event.model.Event;
+import ru.practicum.event.repository.EventRepository;
+import ru.practicum.exception.ConflictException;
+import ru.practicum.exception.NotFoundException;
+import ru.practicum.user.User;
+import ru.practicum.user.UserRepository;
+
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+@Service
+@Transactional(readOnly = true)
+@RequiredArgsConstructor
+@Slf4j
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+public class CommentPrivateServiceImpl implements CommentPrivateService {
+
+    CommentRepository repository;
+
+    UserRepository userRepository;
+
+    EventRepository eventRepository;
+
+    @Transactional
+    @Override
+    public CommentDto createComment(Long userId, Long eventId, CommentCreateDto commentDto) {
+        log.info("createComment - invoked");
+        Comment comment = CommentMapper.toComment(commentDto);
+        User author = userRepository.findById(userId)
+                .orElseThrow(() -> {
+                    log.error("User with id = {} - not registered", userId);
+                    return new NotFoundException("Please register first then you can comment");
+                });
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> {
+                    log.error("Event with id = {} - not exist", eventId);
+                    return new NotFoundException("Event not found");
+                });
+        if (!event.getState().equals(State.PUBLISHED)) {
+            log.error("Event state = {} - should be PUBLISHED", event.getState());
+            throw new ConflictException("Event not published you cant comment it");
+        }
+        comment.setAuthor(author);
+        comment.setEvent(event);
+        comment.setCreateTime(LocalDateTime.now().withNano(0));
+        log.info("Result: new comment created");
+        return CommentMapper.toCommentDto(repository.save(comment));
+    }
+
+    @Transactional
+    @Override
+    public void deleteComment(Long userId, Long comId) {
+        log.info("deleteComment - invoked");
+        Comment comment = repository.findById(comId)
+                .orElseThrow(() -> {
+                    log.error("Comment with id = {} - not exist", comId);
+                    return new NotFoundException("Comment not found");
+                });
+        if (!comment.getAuthor().getId().equals(userId)) {
+            log.error("Unauthorized access by user");
+            throw new ConflictException("you didn't write this comment and can't delete it");
+        }
+        log.info("Result: comment with id = {} - deleted", comId);
+        repository.deleteById(comId);
+    }
+
+    @Transactional
+    @Override
+    public CommentDto patchComment(Long userId, Long comId, CommentCreateDto commentCreateDto) {
+        log.info("patchComment - invoked");
+        Comment newComment = CommentMapper.toComment(commentCreateDto);
+        Comment comment = repository.findById(comId)
+                .orElseThrow(() -> {
+                    log.error("Comment with id = {} - not exist", comId);
+                    return new NotFoundException("Comment not found");
+                });
+        if (!comment.getAuthor().getId().equals(userId)) {
+            log.error("Unauthorized access by user");
+            throw new ConflictException("you didn't write this comment and can't patch it");
+        }
+        comment.setText(newComment.getText());
+        comment.setCreateTime(LocalDateTime.now().withNano(0));
+        log.info("Result: comment with id = {} - updated", comId);
+        return CommentMapper.toCommentDto(comment);
+    }
+
+    @Override
+    public Map<Long, Long> getCommentCount(Collection<Event> list) {
+        List<Long> listEventId = list.stream().map(Event::getId).collect(Collectors.toList());
+        List<CommentCountDto> countList = repository.findAllCommentCount(listEventId);
+        return countList.stream().collect(Collectors.toMap(CommentCountDto::getEventId, CommentCountDto::getCommentCount));
+    }
+}
