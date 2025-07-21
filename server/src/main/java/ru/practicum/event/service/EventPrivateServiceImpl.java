@@ -12,12 +12,12 @@ import ru.practicum.category.CategoryDto;
 import ru.practicum.category.CategoryMapper;
 import ru.practicum.category.CategoryRepository;
 import ru.practicum.event.dto.*;
-import ru.practicum.exception.EntityNotFoundException;
 import ru.practicum.event.mapper.EventMapper;
 import ru.practicum.event.model.Event;
 import ru.practicum.event.repository.EventRepository;
-import ru.practicum.exception.StateException;
-import ru.practicum.exception.TimeException;
+import ru.practicum.exception.ConflictException;
+import ru.practicum.exception.NotFoundException;
+import ru.practicum.request.ParticipationRequestStatus;
 import ru.practicum.user.User;
 import ru.practicum.user.UserMapper;
 import ru.practicum.user.UserRepository;
@@ -40,23 +40,25 @@ public class EventPrivateServiceImpl implements EventPrivateService {
 
     @Override
     public EventFullDto addEvent(Long userId, NewEventDto newEventDto) {
-        User owner = userRepository.getReferenceById(userId);
+        User owner = userRepository.getById(userId);
         Category categoryForSaveEvent = categoryRepository.getReferenceById(newEventDto.getCategory());
         Event saveEvent = EventMapper.toEvent(newEventDto, owner, categoryForSaveEvent);
         eventRepository.save(saveEvent);
         CategoryDto categoryDto = CategoryMapper.toCategoryDto(categoryForSaveEvent);
         UserShortDto userShortDto = UserMapper.toUserShortDto(owner);
-        return EventMapper.toEventFullDto(saveEvent, categoryDto, userShortDto);
+        Long requesterCount = eventRepository.countByEventIdAndStatus(saveEvent.getId(), ParticipationRequestStatus.CONFIRMED);
+        return EventMapper.toEventFullDto(saveEvent, categoryDto, userShortDto, requesterCount);
     }
 
     @Override
     public EventFullDto getEventByUserIdAndEventId(Long userId, Long eventId) {
-        Event eventByUserIdAndEventId = eventRepository.findByIdAndInitiatorId(eventId, userId)
-                .orElseThrow(() -> new EntityNotFoundException(
+        Event eventByUserIdAndEventId = eventRepository.findByIdAndInitiator(eventId, userId)
+                .orElseThrow(() -> new NotFoundException(
                         String.format("Event with id=%d and initiator id=%d not found", eventId, userId)));
         CategoryDto categoryDto = CategoryMapper.toCategoryDto(eventByUserIdAndEventId.getCategory());
-        UserShortDto userShortDto = UserMapper.toUserShortDto(eventByUserIdAndEventId.getInitiator());
-        return EventMapper.toEventFullDto(eventByUserIdAndEventId, categoryDto, userShortDto);
+        UserShortDto userShortDto = UserMapper.toUserShortDto(eventByUserIdAndEventId.getUser());
+        Long requesterCount = eventRepository.countByEventIdAndStatus(eventByUserIdAndEventId.getId(), ParticipationRequestStatus.CONFIRMED);
+        return EventMapper.toEventFullDto(eventByUserIdAndEventId, categoryDto, userShortDto, requesterCount);
     }
 
     @Override
@@ -68,67 +70,55 @@ public class EventPrivateServiceImpl implements EventPrivateService {
                 size.intValue(),
                 Sort.by("eventDate").descending());
 
-        List<Event> events = eventRepository.findByInitiatorId(userId, pageable);
+        List<Event> events = eventRepository.findByInitiator(userId, pageable);
 
         return events.stream()
                 .map(event -> {
                     CategoryDto categoryDto = CategoryMapper.toCategoryDto(event.getCategory());
-                    UserShortDto userShortDto = UserMapper.toUserShortDto(event.getInitiator());
-                    return EventMapper.toEventShortDto(event, categoryDto, userShortDto);
+                    UserShortDto userShortDto = UserMapper.toUserShortDto(event.getUser());
+                    Long requesterCount = eventRepository.countByEventIdAndStatus(event.getId(), ParticipationRequestStatus.CONFIRMED);
+                    return EventMapper.toEventShortDto(event, categoryDto, userShortDto, requesterCount);
                 })
                 .collect(Collectors.toList());
     }
 
     @Override
-    public EventFullDto updateEventByUserIdAndEventId(Long userId, Long eventId, NewEventDto newEventDto) {
+    public EventFullDto updateEventByUserIdAndEventId(Long userId, Long eventId, UpdateEventUserRequest updateEventUserRequest) {
         existsUser(userId);
-        Event event = eventRepository.findByIdAndInitiatorId(eventId, userId)
-                .orElseThrow(() -> new EntityNotFoundException(
+        Event event = eventRepository.findByIdAndInitiator(eventId, userId)
+                .orElseThrow(() -> new NotFoundException(
                         String.format("Event with id=%d and initiator id=%d not found", eventId, userId)));
         if (event.getState() != State.PENDING && event.getState() != State.CANCELED) {
-            throw new StateException("Only pending or canceled events can be changed");
+            throw new ConflictException("Only pending or canceled events can be changed");
         }
-        if (newEventDto.getEventDate() != null &&
-                newEventDto.getEventDate().isBefore(LocalDateTime.now().plusHours(2))) {
-            throw new TimeException("Event date must be at least 2 hours from now");
+        if (updateEventUserRequest.getEventDate() != null &&
+                updateEventUserRequest.getEventDate().isBefore(LocalDateTime.now().plusHours(2))) {
+            throw new ConflictException("Event date must be at least 2 hours from now");
         }
-        updateFieldsByEvent(newEventDto, event);
+        updateFieldsByEvent(updateEventUserRequest, event);
         event.setState(State.PENDING);
         Event updatedEvent = eventRepository.save(event);
         CategoryDto categoryDto = CategoryMapper.toCategoryDto(updatedEvent.getCategory());
-        UserShortDto userShortDto = UserMapper.toUserShortDto(updatedEvent.getInitiator());
-        return EventMapper.toEventFullDto(updatedEvent, categoryDto, userShortDto);
+        UserShortDto userShortDto = UserMapper.toUserShortDto(updatedEvent.getUser());
+        Long requesterCount = eventRepository.countByEventIdAndStatus(event.getId(), ParticipationRequestStatus.CONFIRMED);
+        return EventMapper.toEventFullDto(updatedEvent, categoryDto, userShortDto, requesterCount);
     }
-
-
-    //эти два метода доработать, когда будут готовый реквесты
-
-    /*
-    @Override
-    public List<ParticipationRequestDto> getInformationAboutAllRequestsByUserIdAndEventId(Long userId, Long eventId) {
-        return null;
-    }
-
-    @Override
-    public EventRequestStatusUpdateResult updateStates(Long userId, Long eventId, EventRequestStatusUpdateRequest eventRequestStatusUpdateRequest) {
-        return null;
-    }   */
 
 
     private void existsUser(Long userId) {
         if (!userRepository.existsById(userId)) {
-            throw new EntityNotFoundException("User with id=" + userId + " not found");
+            throw new NotFoundException("User with id=" + userId + " not found");
         }
     }
 
-    private void updateFieldsByEvent(NewEventDto newEventDto, Event event) {
+    private void updateFieldsByEvent(UpdateEventUserRequest newEventDto, Event event) {
         if (newEventDto.getAnnotation() != null) {
             event.setAnnotation(newEventDto.getAnnotation());
         }
 
         if (newEventDto.getCategory() != null) {
             Category category = categoryRepository.findById(newEventDto.getCategory())
-                    .orElseThrow(() -> new EntityNotFoundException(
+                    .orElseThrow(() -> new NotFoundException(
                             "Category with id=" + newEventDto.getCategory() + " not found"));
             event.setCategory(category);
         }

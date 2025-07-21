@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.exception.NotFoundException;
@@ -20,12 +21,13 @@ import static ru.practicum.util.Util.createPageRequestAsc;
 
 public class CategoryPublicServiceImpl implements CategoryPublicService {
 
-    CategoryRepository categoryRepository;
+    CategoryRepository repository;
 
     @Override
     public List<CategoryDto> readAllCategories(Integer from, Integer size) {
         log.info("readAllCategories - invoked");
-        List<Category> cat = categoryRepository.findAll(createPageRequestAsc(from, size)).getContent();
+        Page<Category> page = repository.findAll(createPageRequestAsc(from, size));
+        List<Category> cat = page.getContent();
         log.info("Result: categories size = {}", cat.size());
         return CategoryMapper.toListCategoriesDto(cat);
 
@@ -33,8 +35,8 @@ public class CategoryPublicServiceImpl implements CategoryPublicService {
 
     @Override
     public CategoryDto readCategoryById(Long catId) {
-        log.info("readAllCategories - invoked");
-        Category category = categoryRepository.findById(catId).orElseThrow(() -> {
+        log.info("readCategoryById - invoked");
+        Category category = repository.findById(catId).orElseThrow(() -> {
             log.error("Category with id = {} not exist", catId);
             return new NotFoundException("Category not found");
         });
