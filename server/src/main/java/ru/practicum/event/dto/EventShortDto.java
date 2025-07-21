@@ -5,15 +5,26 @@ import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.experimental.FieldDefaults;
 import ru.practicum.category.CategoryDto;
 import ru.practicum.user.UserShortDto;
 
 import java.time.LocalDateTime;
+
 @AllArgsConstructor
+@Builder
+@Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class EventShortDto {
 
     Long id;
+
+    @NotBlank
+    String annotation;
 
     @NotBlank
     String description;
@@ -26,7 +37,7 @@ public class EventShortDto {
 
     @NotNull
     @Future(message = "Дата события должна быть в будущем")
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     LocalDateTime eventDate;
 
     @NotNull

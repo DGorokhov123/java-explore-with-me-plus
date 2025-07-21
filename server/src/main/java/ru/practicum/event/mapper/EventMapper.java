@@ -33,17 +33,39 @@ public class EventMapper {
     }
 
 
-    public static EventFullDto toEventFullDto(Event saveEvent, CategoryDto categoryDto, UserShortDto userShortDto) {
-        return new EventFullDto(saveEvent.getId(), saveEvent.getAnnotation(), categoryDto, saveEvent.getConfirmedRequester(),
-                saveEvent.getCreatedOn(), saveEvent.getTitle(), saveEvent.getEventDate(), userShortDto, saveEvent.getLocation(), saveEvent.getPaid(),
-                saveEvent.getParticipantLimit(), saveEvent.getPublishedOn(), saveEvent.getRequestModeration(), saveEvent.getState(), saveEvent.getTitle(), saveEvent.getViews());
+    public static EventFullDto toEventFullDto(Event event, CategoryDto categoryDto, UserShortDto userShortDto, Long confirmedRequester) {
+        return EventFullDto.builder()
+                .id(event.getId())
+                .description(event.getDescription())
+                .eventDate(event.getEventDate())
+                .initiator(userShortDto)
+                .paid(event.getPaid())
+                .state(event.getState())
+                .views(event.getViews())
+                .participantLimit(event.getParticipantLimit())
+                .annotation(event.getAnnotation())
+                .category(categoryDto)
+                .confirmedRequester(confirmedRequester)
+                .requestModeration(event.getRequestModeration())
+                .publishedOn(event.getPublishedOn())
+                .createdOn(event.getCreatedOn())
+                .location(event.getLocation())
+                .title(event.getTitle())
+                .build();
     }
 
-    public static EventShortDto toEventShortDto(Event event, CategoryDto categoryDto, UserShortDto userShortDto) {
-        return new EventShortDto(event.getId(), event.getAnnotation(), categoryDto, event.getConfirmedRequester(), event.getEventDate(),
-                userShortDto, event.getPaid(), event.getTitle(), event.getViews());
+    public static EventShortDto toEventShortDto(Event event, CategoryDto categoryDto, UserShortDto userShortDto, Long confirmedRequester) {
+        return EventShortDto.builder()
+                .id(event.getId())
+                .annotation(event.getAnnotation())
+                .categoryDto(categoryDto)
+                .confirmedRequests(confirmedRequester)
+                .eventDate(event.getEventDate())
+                .initiator(userShortDto)
+                .paid(event.getPaid())
+                .title(event.getTitle())
+                .views(event.getViews())
+                .build();
     }
-
-
 
 }

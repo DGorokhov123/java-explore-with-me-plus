@@ -2,6 +2,7 @@ package ru.practicum.event.dto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 import ru.practicum.category.CategoryDto;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
+@Builder
 public class EventFullDto {
 
 
