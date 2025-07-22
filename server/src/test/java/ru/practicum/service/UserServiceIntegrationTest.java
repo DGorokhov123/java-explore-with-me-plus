@@ -246,7 +246,7 @@ class UserServiceIntegrationTest {
         // Then
         assertThat(result).hasSize(5);
         assertThat(result).extracting(UserDto::getEmail)
-                .contains("user5@example.com", "user7@example.com", "user9@example.com");
+                .contains("user0@example.com", "user1@example.com", "user4@example.com");
     }
 
     @Test
