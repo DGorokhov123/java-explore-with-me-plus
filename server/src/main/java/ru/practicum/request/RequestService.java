@@ -55,13 +55,14 @@ public class RequestService {
 
         // если у события достигнут лимит запросов на участие - необходимо вернуть ошибку (Ожидается код ошибки 409)
         long confirmedRequestCount = requestRepository.countByEventIdAndStatus(eventId, ParticipationRequestStatus.CONFIRMED);
-        if (confirmedRequestCount >= event.getParticipantLimit()) {
+        if (event.getParticipantLimit() > 0 && confirmedRequestCount >= event.getParticipantLimit()) {
             throw new ConflictException("Participants limit is already reached", "Forbidden action");
         }
 
         // если для события отключена пре-модерация запросов на участие, то запрос должен автоматически перейти в состояние подтвержденного
         ParticipationRequestStatus newRequestStatus = ParticipationRequestStatus.PENDING;
         if (!event.getRequestModeration()) newRequestStatus = ParticipationRequestStatus.CONFIRMED;
+        if (Objects.equals(event.getParticipantLimit(), 0L)) newRequestStatus = ParticipationRequestStatus.CONFIRMED;
 
         Request newRequest = Request.builder()
                 .requester(requester)
@@ -81,7 +82,7 @@ public class RequestService {
         Request existingRequest = requestRepository.findById(requestId)
                 .orElseThrow(() -> new NotFoundException("Request with id=" + requestId + " was not found"));
 
-        existingRequest.setStatus(ParticipationRequestStatus.CANCELLED);
+        existingRequest.setStatus(ParticipationRequestStatus.CANCELED);
         requestRepository.save(existingRequest);
         return RequestMapper.toDto(existingRequest);
     }

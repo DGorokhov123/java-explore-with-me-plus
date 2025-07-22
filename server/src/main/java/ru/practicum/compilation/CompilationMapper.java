@@ -1,10 +1,8 @@
 package ru.practicum.compilation;
 
 import lombok.experimental.UtilityClass;
-import ru.practicum.category.CategoryMapper;
-import ru.practicum.event.mapper.EventMapper;
 import ru.practicum.event.dto.EventShortDto;
-import ru.practicum.user.UserMapper;
+import ru.practicum.event.mapper.EventMapper;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,8 +13,7 @@ public class CompilationMapper {
     public static CompilationDto toCompilationDto(Compilation compilation) {
         List<EventShortDto> eventShortDtoList = compilation.getEvents().stream()
                 .map(event ->
-                        EventMapper.toEventShortDto(event, CategoryMapper.toCategoryDto(event.getCategory()),
-                                UserMapper.toUserShortDto(event.getInitiator()))
+                        EventMapper.toEventShortDto(event, 0L, 0L)
                 ).collect(Collectors.toList());
         return CompilationDto.builder()
                 .id(compilation.getId())

@@ -1,16 +1,16 @@
 package ru.practicum.event.dto;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
+@NoArgsConstructor
 public class EventAdminParams {
 
     List<Long> users;

@@ -3,6 +3,7 @@ package ru.practicum.request;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.request.dto.EventRequestStatusUpdateRequestDto;
@@ -22,6 +23,7 @@ public class RequestController {
 
     // Добавление запроса от текущего пользователя на участие в событии
     @PostMapping("/users/{userId}/requests")
+    @ResponseStatus(HttpStatus.CREATED)
     public ParticipationRequestDto addRequest(
             @PathVariable @Positive(message = "User Id not valid") Long userId,
             @RequestParam @Positive(message = "Event Id not valid") Long eventId

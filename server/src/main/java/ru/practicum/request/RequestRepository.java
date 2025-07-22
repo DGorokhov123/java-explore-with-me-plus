@@ -17,14 +17,14 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
 
     List<Request> findByEventId(Long eventId);
 
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query("UPDATE Request r SET r.status = :status WHERE r.id IN :ids")
     void updateStatusByIds(
             @Param("ids") List<Long> ids,
             @Param("status") ParticipationRequestStatus status
     );
 
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query("""
             UPDATE Request r
             SET r.status = 'REJECTED'
@@ -33,6 +33,16 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
             """)
     void setStatusToRejectForAllPending(
             @Param("eventId") Long eventId
+    );
+
+    @Query("""
+            SELECT r.event.id, count(r)
+            FROM Request r
+            WHERE r.event.id IN :eventIds
+            GROUP BY r.event.id
+            """)
+    List<Object[]> getConfirmedRequestsByEventIds(
+            @Param("eventIds") List<Long> eventIds
     );
 
 }
