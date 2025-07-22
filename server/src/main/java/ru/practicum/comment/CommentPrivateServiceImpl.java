@@ -15,10 +15,6 @@ import ru.practicum.user.User;
 import ru.practicum.user.UserRepository;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -92,12 +88,5 @@ public class CommentPrivateServiceImpl implements CommentPrivateService {
         comment.setCreateTime(LocalDateTime.now().withNano(0));
         log.info("Result: comment with id = {} - updated", comId);
         return CommentMapper.toCommentDto(comment);
-    }
-
-    @Override
-    public Map<Long, Long> getCommentCount(Collection<Event> list) {
-        List<Long> listEventId = list.stream().map(Event::getId).collect(Collectors.toList());
-        List<CommentCountDto> countList = repository.findAllCommentCount(listEventId);
-        return countList.stream().collect(Collectors.toMap(CommentCountDto::getEventId, CommentCountDto::getCommentCount));
     }
 }

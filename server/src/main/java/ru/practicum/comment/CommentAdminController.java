@@ -36,4 +36,22 @@ public class CommentAdminController {
                 .status(HttpStatus.NO_CONTENT)
                 .body("Comment deleted by admin: " + comId);
     }
+
+    @PatchMapping("/comment/{comId}/approve")
+    public ResponseEntity<String> approveComment(@PathVariable Long comId) {
+        log.info("Calling the PATCH request to /admin/comment/{comId}/approve endpoint");
+        service.approveComment(comId);
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .body("Comment approved by admin: " + comId);
+    }
+
+    @PatchMapping("/comment/{comId}/reject")
+    public ResponseEntity<String> rejectComment(@PathVariable Long comId) {
+        log.info("Calling the PATCH request to /admin/comment/{comId}/reject endpoint");
+        service.rejectComment(comId);
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .body("Comment rejected by admin: " + comId);
+    }
 }

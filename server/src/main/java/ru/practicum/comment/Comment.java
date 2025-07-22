@@ -38,4 +38,7 @@ public class Comment {
 
     @Column(name = "patch_time")
     LocalDateTime patchTime;
+
+    @Column(name = "approved")
+    Boolean approved;
 }
