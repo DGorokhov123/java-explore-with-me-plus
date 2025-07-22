@@ -12,7 +12,6 @@ replay_pid*
 out/
 target/
 stat-postgres/
-main-postgres/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
@@ -23,4 +22,3 @@ main-postgres/
 *.iml
 *.ipr
 /stat-postgres/
-/main-postgres/
