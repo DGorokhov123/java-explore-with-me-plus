@@ -2,14 +2,18 @@ package ru.practicum.event.dto;
 
 
 import jakarta.persistence.Embeddable;
-import lombok.AccessLevel;
-import lombok.Data;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Embeddable
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Location {
-    Double lat;
-    Double lon;
+
+    Float lat;
+    Float lon;
+
 }

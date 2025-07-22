@@ -6,9 +6,11 @@ import lombok.experimental.FieldDefaults;
 import ru.practicum.category.Category;
 import ru.practicum.event.dto.Location;
 import ru.practicum.event.dto.State;
+import ru.practicum.request.Request;
 import ru.practicum.user.User;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
@@ -21,36 +23,22 @@ public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     Long id;
 
-    @Column(name = "annotation", length = 2000, nullable = false)
-    String annotation;
+    @ManyToOne
+    @JoinColumn(name = "initiator", nullable = false)
+    User initiator;
 
     @ManyToOne
     @JoinColumn(name = "categories_id", nullable = false)
     Category category;
 
-    @Column(name = "created_on", nullable = false)
-    LocalDateTime createdOn;
+    @Column(name = "title", length = 120, nullable = false)
+    String title;
 
-    @ManyToOne
-    @JoinColumn(name = "initiator", nullable = false)
-    User user;
-
-    @Embedded
-    Location location;
-
-    @Column(name = "paid", nullable = false)
-    Boolean paid;
-
-    @Column(name = "participant_limit")
-    Long participantLimit;
-
-    @Column(name = "published_on")
-    LocalDateTime publishedOn;
-
-    @Column(name = "request_moderation")
-    Boolean requestModeration;
+    @Column(name = "annotation", length = 2000, nullable = false)
+    String annotation;
 
     @Column(name = "description", length = 7000, nullable = false)
     String description;
@@ -59,12 +47,28 @@ public class Event {
     @Column(name = "state", length = 20, nullable = false)
     State state;
 
-    @Column(name = "title", length = 120, nullable = false)
-    String title;
+    @Embedded
+    Location location;
 
-    @Column(name = "views")
-    Long views;
+    @Column(name = "participant_limit", nullable = false)
+    Long participantLimit;
+
+    @Column(name = "request_moderation", nullable = false)
+    Boolean requestModeration;
+
+    @Column(name = "paid", nullable = false)
+    Boolean paid;
 
     @Column(name = "event_date", nullable = false)
     LocalDateTime eventDate;
+
+    @Column(name = "published_on")
+    LocalDateTime publishedOn;
+
+    @Column(name = "created_on", nullable = false)
+    LocalDateTime createdOn;
+
+    @OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
+    private List<Request> requests;
+
 }

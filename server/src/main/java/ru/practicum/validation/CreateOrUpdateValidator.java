@@ -2,7 +2,9 @@ package ru.practicum.validation;
 
 public interface CreateOrUpdateValidator {
 
-    interface Create {}
+    interface Create {
+    }
 
-    interface Update {}
+    interface Update {
+    }
 }

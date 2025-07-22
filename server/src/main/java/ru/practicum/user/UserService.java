@@ -2,6 +2,7 @@ package ru.practicum.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.exception.ConflictException;
@@ -40,7 +41,8 @@ public class UserService {
 
     public List<UserDto> findByIdListWithOffsetAndLimit(List<Long> idList, Integer from, Integer size) {
         if (idList == null || idList.isEmpty()) {
-            return userRepository.findAll(PageRequest.of(from, size))
+            Sort sort = Sort.by(Sort.Direction.ASC, "id");
+            return userRepository.findAll(PageRequest.of(from / size, size, sort))
                     .stream()
                     .map(UserMapper::toDto)
                     .toList();
