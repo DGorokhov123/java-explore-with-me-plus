@@ -1,6 +1,5 @@
 package ru.practicum.event.service;
 
-import jakarta.persistence.Tuple;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

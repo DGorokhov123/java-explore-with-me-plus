@@ -1,7 +1,5 @@
 package ru.practicum.event.repository;
 
-import jakarta.persistence.Tuple;
-import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
