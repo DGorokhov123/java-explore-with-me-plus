@@ -23,6 +23,7 @@ public class CommentMapper {
                 .event(EventMapper.toEventComment(comment.getEvent()))
                 .createTime(comment.getCreateTime())
                 .text(comment.getText())
+                .approved(comment.getApproved())
                 .build();
     }
 

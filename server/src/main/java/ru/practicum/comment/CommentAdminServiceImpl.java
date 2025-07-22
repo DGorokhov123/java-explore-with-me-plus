@@ -49,4 +49,22 @@ public class CommentAdminServiceImpl implements CommentAdminService {
         log.info("Result: list of comments size = {} ", list.size());
         return CommentMapper.toListCommentDto(list);
     }
+
+    @Override
+    public void approveComment(Long comId) {
+        log.info("approveComment - invoked");
+        Comment comment = repository.findById(comId).orElseThrow(() -> new NotFoundException("Comment not found"));
+        comment.setApproved(true);
+        repository.save(comment);
+        log.info("Result: comment with id = {} approved", comId);
+    }
+
+    @Override
+    public void rejectComment(Long comId) {
+        log.info("rejectComment - invoked");
+        Comment comment = repository.findById(comId).orElseThrow(() -> new NotFoundException("Comment not found"));
+        comment.setApproved(false);
+        repository.save(comment);
+        log.info("Result: comment with id = {} rejected", comId);
+    }
 }

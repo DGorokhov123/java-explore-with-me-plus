@@ -9,4 +9,8 @@ public interface CommentAdminService {
     List<CommentDto> search(String text);
 
     List<CommentDto> findAllById(Long userId);
+
+    void approveComment(Long comId);
+
+    void rejectComment(Long comId);
 }

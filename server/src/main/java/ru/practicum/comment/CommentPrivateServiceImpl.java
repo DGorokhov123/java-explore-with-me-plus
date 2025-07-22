@@ -93,11 +93,4 @@ public class CommentPrivateServiceImpl implements CommentPrivateService {
         log.info("Result: comment with id = {} - updated", comId);
         return CommentMapper.toCommentDto(comment);
     }
-
-    @Override
-    public Map<Long, Long> getCommentCount(Collection<Event> list) {
-        List<Long> listEventId = list.stream().map(Event::getId).collect(Collectors.toList());
-        List<CommentCountDto> countList = repository.findAllCommentCount(listEventId);
-        return countList.stream().collect(Collectors.toMap(CommentCountDto::getEventId, CommentCountDto::getCommentCount));
-    }
 }
