@@ -48,4 +48,16 @@ public class CommentPublicServiceImpl implements CommentPublicService {
         log.info("Result : list of comments size = {}", comments.size());
         return CommentMapper.toListCommentShortDto(comments);
     }
+
+    @Override
+    public CommentDto getCommentByEventAndCommentId(Long eventId, Long commentId) {
+        log.info("getCommentByEventAndCommentId - invoked");
+        Comment comment = repository.findByEventIdAndId(eventId, commentId)
+                .orElseThrow(() -> {
+                    log.error("Comment with eventId = {} and commentId = {} - not exist", eventId, commentId);
+                    return new NotFoundException("Comment not found");
+                });
+        log.info("Result: comment with eventId= {} and commentId= {}", eventId, commentId);
+        return CommentMapper.toCommentDto(comment);
+    }
 }

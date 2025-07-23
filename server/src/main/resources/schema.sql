@@ -69,3 +69,4 @@ CREATE TABLE IF NOT EXISTS comments (
 );
 
 CREATE INDEX idx_textual_content ON comments (textual_content);
+CREATE INDEX idx_event_id_comment_id ON comments (event_id, id);

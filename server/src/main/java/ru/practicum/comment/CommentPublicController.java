@@ -30,4 +30,11 @@ public class CommentPublicController {
         log.info("Calling the GET request to /events/{eventId}/comment");
         return ResponseEntity.ok(service.getCommentsByEvent(eventId, from, size));
     }
+
+    @GetMapping("/events/{eventId}/comment/{commentId}")
+    public ResponseEntity<CommentDto> getByEventAndCommentId(@PathVariable Long eventId, @PathVariable Long commentId) {
+        log.info("Calling the GET request to /events/{eventId}/comment/{commentId}");
+        return ResponseEntity.ok(service.getCommentByEventAndCommentId(eventId, commentId));
+    }
+
 }
