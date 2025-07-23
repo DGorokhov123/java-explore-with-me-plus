@@ -17,7 +17,7 @@ import ru.practicum.user.UserRepository;
 import java.time.LocalDateTime;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -27,7 +27,6 @@ public class CommentPrivateServiceImpl implements CommentPrivateService {
     UserRepository userRepository;
     EventRepository eventRepository;
 
-    @Transactional
     @Override
     public CommentDto createComment(Long userId, Long eventId, CommentCreateDto commentDto) {
         log.info("createComment - invoked");
@@ -53,7 +52,6 @@ public class CommentPrivateServiceImpl implements CommentPrivateService {
         return CommentMapper.toCommentDto(repository.save(comment));
     }
 
-    @Transactional
     @Override
     public void deleteComment(Long userId, Long comId) {
         log.info("deleteComment - invoked");
@@ -70,7 +68,6 @@ public class CommentPrivateServiceImpl implements CommentPrivateService {
         repository.deleteById(comId);
     }
 
-    @Transactional
     @Override
     public CommentDto patchComment(Long userId, Long comId, CommentCreateDto commentCreateDto) {
         log.info("patchComment - invoked");

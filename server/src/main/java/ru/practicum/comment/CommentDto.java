@@ -21,6 +21,6 @@ public class CommentDto {
     UserDto author;
     EventCommentDto event;
     @JsonSerialize(using = LocalDateTimeSerializer.class)
-    private LocalDateTime createTime;
+    LocalDateTime createTime;
     Boolean approved;
 }
