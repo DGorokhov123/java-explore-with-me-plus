@@ -1,15 +1,17 @@
 package ru.practicum.comment;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class CommentCountDto {
 
     private Long eventId;
     private Long commentCount;
 
-    public CommentCountDto(Long eventId, Long commentCount) {
-        this.eventId = eventId;
-        this.commentCount = commentCount;
-    }
 }

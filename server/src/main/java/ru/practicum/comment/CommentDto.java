@@ -1,10 +1,9 @@
 package ru.practicum.comment;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import ru.practicum.event.dto.EventCommentDto;
-import ru.practicum.serialize.LocalDateTimeSerializer;
 import ru.practicum.user.UserDto;
 
 import java.time.LocalDateTime;
@@ -20,7 +19,7 @@ public class CommentDto {
     String text;
     UserDto author;
     EventCommentDto event;
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     LocalDateTime createTime;
     Boolean approved;
 }

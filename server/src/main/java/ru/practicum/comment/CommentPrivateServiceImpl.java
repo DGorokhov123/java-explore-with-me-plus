@@ -82,7 +82,7 @@ public class CommentPrivateServiceImpl implements CommentPrivateService {
             throw new ConflictException("you didn't write this comment and can't patch it");
         }
         comment.setText(newComment.getText());
-        comment.setCreateTime(LocalDateTime.now().withNano(0));
+        comment.setPatchTime(LocalDateTime.now().withNano(0));
         log.info("Result: comment with id = {} - updated", comId);
         return CommentMapper.toCommentDto(comment);
     }

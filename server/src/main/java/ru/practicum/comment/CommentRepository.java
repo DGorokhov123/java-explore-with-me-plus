@@ -1,5 +1,6 @@
 package ru.practicum.comment;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,11 +20,10 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     @Query("select c " +
             "from Comment as c " +
-            "where lower(c.text) like concat('%', lower(?1), '%') ")
-    List<Comment> findAllByText(String text);
+            "where c.text ilike concat('%', ?1, '%')")
+    Page<Comment> findAllByText(String text, Pageable pageable);
 
-    List<Comment> findAllByAuthorId(Long userId);
+    Page<Comment> findAllByAuthorId(Long userId, Pageable pageable);
 
     Optional<Comment> findByEventIdAndId(Long eventId, Long commentId);
-
 }

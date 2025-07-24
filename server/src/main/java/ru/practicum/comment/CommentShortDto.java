@@ -12,10 +12,7 @@ import ru.practicum.user.UserDto;
 public class CommentShortDto {
 
     long id;
-
     String text;
-
     UserDto author;
-
     String createTime;
 }

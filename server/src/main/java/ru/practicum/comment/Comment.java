@@ -22,23 +22,23 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(name = "textual_content")
+    @Column(name = "textual_content", length = 1000, nullable = false)
     String text;
 
     @ManyToOne
-    @JoinColumn(name = "author_id")
+    @JoinColumn(name = "author_id", nullable = false)
     User author;
 
     @ManyToOne
-    @JoinColumn(name = "event_id")
+    @JoinColumn(name = "event_id", nullable = false)
     Event event;
 
-    @Column(name = "create_time")
+    @Column(name = "create_time", nullable = false)
     LocalDateTime createTime;
 
     @Column(name = "patch_time")
     LocalDateTime patchTime;
 
-    @Column(name = "approved")
+    @Column(name = "approved", nullable = false)
     Boolean approved;
 }
