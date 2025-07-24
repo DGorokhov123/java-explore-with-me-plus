@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Transactional(readOnly = true)
 public class EventPublicServiceImpl implements EventPublicService {
 
     StatClient statClient;
@@ -40,7 +41,6 @@ public class EventPublicServiceImpl implements EventPublicService {
 
     // Получение событий с возможностью фильтрации
     @Override
-    @Transactional(readOnly = true)
     public List<EventShortDto> getAllEventsByParams(EventParams params, HttpServletRequest request) {
 
         if (params.getRangeStart() != null && params.getRangeEnd() != null && params.getRangeEnd().isBefore(params.getRangeStart())) {
@@ -88,6 +88,7 @@ public class EventPublicServiceImpl implements EventPublicService {
 
     // Получение подробной информации об опубликованном событии по его идентификатору
     @Override
+    @Transactional(readOnly = false)
     public EventFullDto getEventById(Long eventId, HttpServletRequest request) {
         // событие должно быть опубликовано
         Event event = eventRepository.findByIdAndState(eventId, State.PUBLISHED)

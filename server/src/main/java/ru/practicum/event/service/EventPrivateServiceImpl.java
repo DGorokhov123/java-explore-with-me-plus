@@ -12,6 +12,7 @@ import ru.practicum.category.Category;
 import ru.practicum.category.CategoryRepository;
 import ru.practicum.event.dto.*;
 import ru.practicum.event.mapper.EventMapper;
+import ru.practicum.event.mapper.LocationMapper;
 import ru.practicum.event.model.Event;
 import ru.practicum.event.repository.EventRepository;
 import ru.practicum.event.repository.ViewRepository;
@@ -31,6 +32,7 @@ import java.util.stream.Collectors;
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class EventPrivateServiceImpl implements EventPrivateService {
 
     UserRepository userRepository;
@@ -55,7 +57,6 @@ public class EventPrivateServiceImpl implements EventPrivateService {
 
     // Получение полной информации о событии добавленном текущим пользователем
     @Override
-    @Transactional(readOnly = true)
     public EventFullDto getEventByUserIdAndEventId(Long userId, Long eventId) {
         User initiator = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("User with id=" + userId + " was not found"));
@@ -73,7 +74,6 @@ public class EventPrivateServiceImpl implements EventPrivateService {
 
     // Получение событий, добавленных текущим пользователем
     @Override
-    @Transactional(readOnly = true)
     public List<EventShortDto> getEventsByUserId(Long userId, Long from, Long size) {
         User initiator = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("User with id=" + userId + " was not found"));
@@ -137,7 +137,8 @@ public class EventPrivateServiceImpl implements EventPrivateService {
         if (updateEventDto.getTitle() != null) event.setTitle(updateEventDto.getTitle());
         if (updateEventDto.getAnnotation() != null) event.setAnnotation(updateEventDto.getAnnotation());
         if (updateEventDto.getDescription() != null) event.setDescription(updateEventDto.getDescription());
-        if (updateEventDto.getLocation() != null) event.setLocation(updateEventDto.getLocation());
+        if (updateEventDto.getLocation() != null)
+            event.setLocation(LocationMapper.toEntity(updateEventDto.getLocation()));
         if (updateEventDto.getPaid() != null) event.setPaid(updateEventDto.getPaid());
         if (updateEventDto.getParticipantLimit() != null)
             event.setParticipantLimit(updateEventDto.getParticipantLimit());

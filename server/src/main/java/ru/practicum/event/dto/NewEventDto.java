@@ -30,7 +30,7 @@ public class NewEventDto {
     String description;
 
     @Nullable
-    Location location;
+    LocationDto location;
 
     @Nullable
     Boolean requestModeration = true;

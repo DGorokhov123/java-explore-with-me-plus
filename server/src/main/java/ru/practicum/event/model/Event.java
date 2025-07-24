@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import ru.practicum.category.Category;
-import ru.practicum.event.dto.Location;
 import ru.practicum.event.dto.State;
 import ru.practicum.request.Request;
 import ru.practicum.user.User;

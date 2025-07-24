@@ -38,7 +38,7 @@ public class UpdateEventDto {
     String description;
 
     @Nullable
-    Location location;
+    LocationDto location;
 
     @Nullable
     Boolean paid;

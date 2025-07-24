@@ -22,6 +22,7 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class RequestService {
 
     private final RequestRepository requestRepository;
@@ -88,7 +89,6 @@ public class RequestService {
     }
 
     // Получение информации о заявках текущего пользователя на участие в чужих событиях
-    @Transactional(readOnly = true)
     public Collection<ParticipationRequestDto> findRequesterRequests(Long userId) {
         return requestRepository.findByRequesterId(userId).stream()
                 .filter(Objects::nonNull)
@@ -99,7 +99,6 @@ public class RequestService {
     // ЗАЯВКИ НА КОНКРЕТНОЕ СОБЫТИЕ
 
     // Получение информации о запросах на участие в событии текущего пользователя
-    @Transactional(readOnly = true)
     public Collection<ParticipationRequestDto> findEventRequests(Long userId, Long eventId) {
         User initiator = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("User with id=" + userId + " was not found"));

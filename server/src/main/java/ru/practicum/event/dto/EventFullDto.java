@@ -26,7 +26,7 @@ public class EventFullDto {
 
     State state;
 
-    Location location;
+    LocationDto location;
 
     Long participantLimit;
     Boolean requestModeration;

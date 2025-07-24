@@ -11,6 +11,7 @@ import ru.practicum.category.Category;
 import ru.practicum.category.CategoryRepository;
 import ru.practicum.event.dto.*;
 import ru.practicum.event.mapper.EventMapper;
+import ru.practicum.event.mapper.LocationMapper;
 import ru.practicum.event.model.Event;
 import ru.practicum.event.repository.EventRepository;
 import ru.practicum.event.repository.JpaSpecifications;
@@ -29,6 +30,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Transactional(readOnly = true)
 public class EventAdminServiceImpl implements EventAdminService {
 
     EventRepository eventRepository;
@@ -38,7 +40,6 @@ public class EventAdminServiceImpl implements EventAdminService {
 
     // Поиск событий
     @Override
-    @Transactional(readOnly = true)
     public List<EventFullDto> getAllEventsByParams(EventAdminParams params) {
         Pageable pageable = PageRequest.of(
                 params.getFrom().intValue() / params.getSize().intValue(),
@@ -81,7 +82,8 @@ public class EventAdminServiceImpl implements EventAdminService {
         if (updateEventDto.getTitle() != null) event.setTitle(updateEventDto.getTitle());
         if (updateEventDto.getAnnotation() != null) event.setAnnotation(updateEventDto.getAnnotation());
         if (updateEventDto.getDescription() != null) event.setDescription(updateEventDto.getDescription());
-        if (updateEventDto.getLocation() != null) event.setLocation(updateEventDto.getLocation());
+        if (updateEventDto.getLocation() != null)
+            event.setLocation(LocationMapper.toEntity(updateEventDto.getLocation()));
         if (updateEventDto.getPaid() != null) event.setPaid(updateEventDto.getPaid());
         if (updateEventDto.getParticipantLimit() != null)
             event.setParticipantLimit(updateEventDto.getParticipantLimit());
