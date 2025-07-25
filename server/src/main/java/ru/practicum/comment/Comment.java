@@ -3,7 +3,6 @@ package ru.practicum.comment;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.annotation.Id;
 import ru.practicum.event.model.Event;
 import ru.practicum.user.User;
 

@@ -1,5 +1,6 @@
 package ru.practicum.comment;
 
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -17,22 +18,23 @@ public class CommentPublicController {
 
     private final CommentPublicService service;
 
-    @GetMapping("/comment/{comId}")
-    public ResponseEntity<CommentDto> getById(@PathVariable Long comId) {
+    @GetMapping("/comments/{comId}")
+    public ResponseEntity<CommentDto> getById(@PathVariable @Positive Long comId) {
         log.info("Calling the GET request to /comment/{comId}endpoint");
         return ResponseEntity.ok(service.getComment(comId));
     }
 
-    @GetMapping("/events/{eventId}/comment")
-    public ResponseEntity<List<CommentShortDto>> getByEventId(@PathVariable Long eventId,
+    @GetMapping("/events/{eventId}/comments")
+    public ResponseEntity<List<CommentShortDto>> getByEventId(@PathVariable @Positive Long eventId,
                                                               @RequestParam(defaultValue = "0") int from,
                                                               @RequestParam(defaultValue = "10") int size) {
         log.info("Calling the GET request to /events/{eventId}/comment");
         return ResponseEntity.ok(service.getCommentsByEvent(eventId, from, size));
     }
 
-    @GetMapping("/events/{eventId}/comment/{commentId}")
-    public ResponseEntity<CommentDto> getByEventAndCommentId(@PathVariable Long eventId, @PathVariable Long commentId) {
+    @GetMapping("/events/{eventId}/comments/{commentId}")
+    public ResponseEntity<CommentDto> getByEventAndCommentId(@PathVariable @Positive Long eventId,
+                                                             @PathVariable @Positive Long commentId) {
         log.info("Calling the GET request to /events/{eventId}/comment/{commentId}");
         return ResponseEntity.ok(service.getCommentByEventAndCommentId(eventId, commentId));
     }
