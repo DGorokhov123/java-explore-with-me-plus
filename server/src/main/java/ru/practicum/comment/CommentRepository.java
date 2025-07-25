@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-    List<Comment> findAllByEventId(Long eventId, Pageable pageable);
+    Page<Comment> findAllByEventId(Long eventId, Pageable pageable);
 
     @Query("select new ru.practicum.comment.CommentCountDto(c.event.id, count(c.id)) " +
             "from Comment as c " +

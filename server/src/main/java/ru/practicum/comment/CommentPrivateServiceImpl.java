@@ -17,10 +17,10 @@ import ru.practicum.user.UserRepository;
 import java.time.LocalDateTime;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Transactional
 public class CommentPrivateServiceImpl implements CommentPrivateService {
 
     CommentRepository repository;
@@ -71,7 +71,6 @@ public class CommentPrivateServiceImpl implements CommentPrivateService {
     @Override
     public CommentDto patchComment(Long userId, Long comId, CommentCreateDto commentCreateDto) {
         log.info("patchComment - invoked");
-        Comment newComment = CommentMapper.toComment(commentCreateDto);
         Comment comment = repository.findById(comId)
                 .orElseThrow(() -> {
                     log.error("Comment with id = {} - not exist", comId);
@@ -81,7 +80,7 @@ public class CommentPrivateServiceImpl implements CommentPrivateService {
             log.error("Unauthorized access by user");
             throw new ConflictException("you didn't write this comment and can't patch it");
         }
-        comment.setText(newComment.getText());
+        comment.setText(commentCreateDto.getText());
         comment.setPatchTime(LocalDateTime.now().withNano(0));
         log.info("Result: comment with id = {} - updated", comId);
         return CommentMapper.toCommentDto(comment);

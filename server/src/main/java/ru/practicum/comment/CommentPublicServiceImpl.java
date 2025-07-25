@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,12 +40,13 @@ public class CommentPublicServiceImpl implements CommentPublicService {
     @Override
     public List<CommentShortDto> getCommentsByEvent(Long eventId, int from, int size) {
         log.info("getCommentsByEvent - invoked");
-        if (eventRepository.existsById(eventId)) {
+        if (!eventRepository.existsById(eventId)) {
             log.error("Event with id = {} - not exist", eventId);
             throw new NotFoundException("Event not found");
         }
         Pageable pageable = createPageRequestAsc("createTime", from, size);
-        List<Comment> comments = repository.findAllByEventId(eventId, pageable);
+        Page<Comment> commentsPage = repository.findAllByEventId(eventId, pageable);
+        List<Comment> comments = commentsPage.getContent();
         log.info("Result : list of comments size = {}", comments.size());
         return CommentMapper.toListCommentShortDto(comments);
     }
@@ -57,6 +59,10 @@ public class CommentPublicServiceImpl implements CommentPublicService {
                     log.error("Comment with eventId = {} and commentId = {} - not exist", eventId, commentId);
                     return new NotFoundException("Comment not found");
                 });
+        if (!comment.getEvent().getId().equals(eventId)) {
+            log.error("Comment with commentId = {} does not belong to event with eventId = {}", commentId, eventId);
+            throw new NotFoundException("Comment not found for the specified event");
+        }
         log.info("Result: comment with eventId= {} and commentId= {}", eventId, commentId);
         return CommentMapper.toCommentDto(comment);
     }

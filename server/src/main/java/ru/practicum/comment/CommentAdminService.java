@@ -6,11 +6,11 @@ public interface CommentAdminService {
 
     void delete(Long comId);
 
-    List<CommentDto> search(String text);
+    List<CommentDto> search(String text, int from, int size);
 
-    List<CommentDto> findAllById(Long userId);
+    List<CommentDto> findAllById(Long userId, int from, int size);
 
-    void approveComment(Long comId);
+    CommentDto approveComment(Long comId);
 
-    void rejectComment(Long comId);
+    CommentDto rejectComment(Long comId);
 }
