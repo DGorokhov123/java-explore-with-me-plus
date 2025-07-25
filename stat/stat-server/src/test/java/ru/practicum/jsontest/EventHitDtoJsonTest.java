@@ -97,7 +97,7 @@ class EventHitDtoJsonTest {
         LocalDateTime timestamp = LocalDateTime.of(2024, 1, 1, 0, 0, 0);
         String jsonContent = "{" + """
                     "app": "test-app",
-                    "uri": "/events/search?query=test&sort=date",
+                    "uri": "/events/search?query=test&eventSort=date",
                     "ip": "127.0.0.1",
                     "timestamp": "FORMATTED"
                 }
@@ -108,7 +108,7 @@ class EventHitDtoJsonTest {
 
         // Then
         Assertions.assertThat(eventHit.getApp()).isEqualTo("test-app");
-        Assertions.assertThat(eventHit.getUri()).isEqualTo("/events/search?query=test&sort=date");
+        Assertions.assertThat(eventHit.getUri()).isEqualTo("/events/search?query=test&eventSort=date");
         Assertions.assertThat(eventHit.getIp()).isEqualTo("127.0.0.1");
         Assertions.assertThat(eventHit.getTimestamp()).isEqualTo(timestamp);
     }
