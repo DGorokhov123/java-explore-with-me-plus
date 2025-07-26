@@ -1,35 +1,19 @@
 package ru.practicum.compilation;
 
 import lombok.experimental.UtilityClass;
-import ru.practicum.category.CategoryMapper;
-import ru.practicum.event.mapper.EventMapper;
 import ru.practicum.event.dto.EventShortDto;
-import ru.practicum.user.UserMapper;
+import ru.practicum.event.mapper.EventMapper;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @UtilityClass
 public class CompilationMapper {
 
-    public CompilationDto toCompilationsDtoFromCompilation(Compilation compilation) {
-        return CompilationDto.builder()
-                .events(compilation.getEvents().stream().map(event ->
-                        EventMapper.toEventShortDto(event, CategoryMapper.toCategoryDto(event.getCategory()),
-                                UserMapper.toUserShortDto(event.getUser()))
-                ).collect(Collectors.toList()))
-                .id(compilation.getId())
-                .pinned(compilation.getPinned())
-                .title(compilation.getTitle())
-                .build();
-    }
-
     public static CompilationDto toCompilationDto(Compilation compilation) {
         List<EventShortDto> eventShortDtoList = compilation.getEvents().stream()
                 .map(event ->
-                        EventMapper.toEventShortDto(event, CategoryMapper.toCategoryDto(event.getCategory()),
-                                UserMapper.toUserShortDto(event.getUser()))
+                        EventMapper.toEventShortDto(event, 0L, 0L)
                 ).collect(Collectors.toList());
         return CompilationDto.builder()
                 .id(compilation.getId())

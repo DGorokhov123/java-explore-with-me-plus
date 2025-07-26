@@ -20,14 +20,18 @@ public class CategoryPublicController {
     private final CategoryPublicService service;
 
     @GetMapping
-    public ResponseEntity<List<CategoryDto>> readAllCategories(@RequestParam(defaultValue = "0") @PositiveOrZero int from,
-                                                               @RequestParam(defaultValue = "10") @Positive int size) {
+    public ResponseEntity<List<CategoryDto>> readAllCategories(
+            @RequestParam(defaultValue = "0") @PositiveOrZero int from,
+            @RequestParam(defaultValue = "10") @Positive int size
+    ) {
         log.info("Calling the POST request to - /categories - endpoint");
         return ResponseEntity.ok(service.readAllCategories(from, size));
     }
 
     @GetMapping("/{catId}")
-    public ResponseEntity<CategoryDto> readCategoryById(@PathVariable Long catId) {
+    public ResponseEntity<CategoryDto> readCategoryById(
+            @PathVariable Long catId
+    ) {
         log.info("Calling the GET request to - /categories/{catId} - endpoint");
         return ResponseEntity.ok(service.readCategoryById(catId));
     }

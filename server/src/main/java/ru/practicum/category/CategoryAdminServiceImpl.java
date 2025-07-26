@@ -12,9 +12,9 @@ import ru.practicum.exception.NotFoundException;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Transactional(readOnly = false)
 public class CategoryAdminServiceImpl implements CategoryAdminService {
 
     CategoryRepository categoryRepository;
@@ -22,7 +22,6 @@ public class CategoryAdminServiceImpl implements CategoryAdminService {
     EventRepository eventRepository;
 
     @Override
-    @Transactional
     public CategoryDto createCategory(CategoryDto requestCategory) {
         log.info("createCategories - invoked");
         if (categoryRepository.existsByName(requestCategory.getName())) {
@@ -35,7 +34,6 @@ public class CategoryAdminServiceImpl implements CategoryAdminService {
     }
 
     @Override
-    @Transactional
     public void deleteCategory(Long catId) {
         log.info("deleteCategories - invoked");
         if (!categoryRepository.existsById(catId)) {
@@ -49,7 +47,6 @@ public class CategoryAdminServiceImpl implements CategoryAdminService {
         categoryRepository.deleteById(catId);
     }
 
-    @Transactional
     @Override
     public CategoryDto updateCategory(Long catId, CategoryDto categoryDto) {
         log.info("updateCategories - invoked");

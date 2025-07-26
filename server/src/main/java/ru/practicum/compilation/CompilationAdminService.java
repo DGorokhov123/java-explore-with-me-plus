@@ -6,5 +6,6 @@ public interface CompilationAdminService {
 
     void deleteCompilation(Long compId);
 
-    CompilationDto updateCompilation(Long compId, NewCompilationDto newCompilationDto);
+    CompilationDto updateCompilation(Long compId, UpdateCompilationDto updateCompilationDto);
+
 }

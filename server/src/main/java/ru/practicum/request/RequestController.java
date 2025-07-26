@@ -3,6 +3,7 @@ package ru.practicum.request;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.request.dto.EventRequestStatusUpdateRequestDto;
@@ -18,9 +19,11 @@ public class RequestController {
 
     private final RequestService requestService;
 
-    // MODIFY OPS
+    // ЗАЯВКИ ТЕКУЩЕГО ПОЛЬЗОВАТЕЛЯ
 
+    // Добавление запроса от текущего пользователя на участие в событии
     @PostMapping("/users/{userId}/requests")
+    @ResponseStatus(HttpStatus.CREATED)
     public ParticipationRequestDto addRequest(
             @PathVariable @Positive(message = "User Id not valid") Long userId,
             @RequestParam @Positive(message = "Event Id not valid") Long eventId
@@ -28,6 +31,7 @@ public class RequestController {
         return requestService.addRequest(userId, eventId);
     }
 
+    // Отмена своего запроса на участие в событии
     @PatchMapping("/users/{userId}/requests/{requestId}/cancel")
     public ParticipationRequestDto cancelRequest(
             @PathVariable @Positive(message = "User Id not valid") Long userId,
@@ -36,7 +40,15 @@ public class RequestController {
         return requestService.cancelRequest(userId, requestId);
     }
 
-    // PATCH
+    // Получение информации о заявках текущего пользователя на участие в чужих событиях
+    @GetMapping("/users/{userId}/requests")
+    public Collection<ParticipationRequestDto> getRequesterRequests(
+            @PathVariable @Positive(message = "User Id not valid") Long userId
+    ) {
+        return requestService.findRequesterRequests(userId);
+    }
+
+    // ЗАЯВКИ НА КОНКРЕТНОЕ СОБЫТИЕ
 
     // Изменение статуса (подтверждена, отменена) заявок на участие в событии текущего пользователя
     @PatchMapping("/users/{userId}/events/{eventId}/requests")
@@ -47,17 +59,6 @@ public class RequestController {
     ) {
         return requestService.moderateRequest(userId, eventId, updateRequestDto);
     }
-
-    // GET COLLECTION
-
-    @GetMapping("/users/{userId}/requests")
-    public Collection<ParticipationRequestDto> getRequesterRequests(
-            @PathVariable @Positive(message = "User Id not valid") Long userId
-    ) {
-        return requestService.findRequesterRequests(userId);
-    }
-
-    // GET
 
     // Получение информации о запросах на участие в событии текущего пользователя
     @GetMapping("/users/{userId}/events/{eventId}/requests")
