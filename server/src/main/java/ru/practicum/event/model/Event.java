@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import ru.practicum.category.Category;
+import ru.practicum.comment.Comment;
 import ru.practicum.event.dto.State;
 import ru.practicum.request.Request;
 import ru.practicum.user.User;
@@ -69,5 +70,8 @@ public class Event {
 
     @OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
     private List<Request> requests;
+
+    @OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
+    private List<Comment> comments;
 
 }

@@ -30,7 +30,6 @@ public class CategoryPublicServiceImpl implements CategoryPublicService {
         List<Category> cat = page.getContent();
         log.info("Result: categories size = {}", cat.size());
         return CategoryMapper.toListCategoriesDto(cat);
-
     }
 
     @Override
