@@ -46,8 +46,8 @@ public class CommentAdminServiceImpl implements CommentAdminService {
     }
 
     @Override
-    public List<CommentDto> findAllById(Long userId, int from, int size) {
-        log.info("admin findAllById - invoked");
+    public List<CommentDto> findAllByUserId(Long userId, int from, int size) {
+        log.info("admin findAllByUserId - invoked");
         if (!userRepository.existsById(userId)) {
             log.error("User with id = {} not exist", userId);
             throw new NotFoundException("User not found");

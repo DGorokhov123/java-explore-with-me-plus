@@ -8,7 +8,7 @@ public interface CommentAdminService {
 
     List<CommentDto> search(String text, int from, int size);
 
-    List<CommentDto> findAllById(Long userId, int from, int size);
+    List<CommentDto> findAllByUserId(Long userId, int from, int size);
 
     CommentDto approveComment(Long comId);
 

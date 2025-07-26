@@ -19,7 +19,12 @@ public class CommentDto {
     String text;
     UserDto author;
     EventCommentDto event;
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDateTime createTime;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    LocalDateTime patchTime;
+
     Boolean approved;
 }

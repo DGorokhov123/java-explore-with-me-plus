@@ -20,7 +20,7 @@ public class CommentPublicController {
 
     @GetMapping("/comments/{comId}")
     public ResponseEntity<CommentDto> getById(@PathVariable @Positive Long comId) {
-        log.info("Calling the GET request to /comment/{comId}endpoint");
+        log.info("Calling the GET request to /comments/{comId} endpoint");
         return ResponseEntity.ok(service.getComment(comId));
     }
 
@@ -28,14 +28,14 @@ public class CommentPublicController {
     public ResponseEntity<List<CommentShortDto>> getByEventId(@PathVariable @Positive Long eventId,
                                                               @RequestParam(defaultValue = "0") int from,
                                                               @RequestParam(defaultValue = "10") int size) {
-        log.info("Calling the GET request to /events/{eventId}/comment");
+        log.info("Calling the GET request to /events/{eventId}/comments");
         return ResponseEntity.ok(service.getCommentsByEvent(eventId, from, size));
     }
 
     @GetMapping("/events/{eventId}/comments/{commentId}")
     public ResponseEntity<CommentDto> getByEventAndCommentId(@PathVariable @Positive Long eventId,
                                                              @PathVariable @Positive Long commentId) {
-        log.info("Calling the GET request to /events/{eventId}/comment/{commentId}");
+        log.info("Calling the GET request to /events/{eventId}/comments/{commentId}");
         return ResponseEntity.ok(service.getCommentByEventAndCommentId(eventId, commentId));
     }
 

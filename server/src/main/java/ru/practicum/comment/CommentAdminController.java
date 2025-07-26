@@ -1,10 +1,9 @@
 package ru.practicum.comment;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +19,7 @@ public class CommentAdminController {
     private final CommentAdminService service;
 
     @GetMapping("/comments/search")
-    public ResponseEntity<List<CommentDto>> search(@RequestParam String text,
+    public ResponseEntity<List<CommentDto>> search(@RequestParam @NotBlank String text,
                                                    @RequestParam(required = false, defaultValue = "0") int from,
                                                    @RequestParam(required = false, defaultValue = "10") int size) {
         log.info("Calling the GET request to /admin/comment/search endpoint");
@@ -32,8 +31,7 @@ public class CommentAdminController {
                                                 @RequestParam(required = false, defaultValue = "0") int from,
                                                 @RequestParam(required = false, defaultValue = "10") int size) {
         log.info("Calling the GET request to admin/users/{userId}/comment endpoint");
-        Pageable pageable = PageRequest.of(from / size, size);
-        return ResponseEntity.ok(service.findAllById(userId, from, size));
+        return ResponseEntity.ok(service.findAllByUserId(userId, from, size));
     }
 
     @DeleteMapping("comments/{comId}")

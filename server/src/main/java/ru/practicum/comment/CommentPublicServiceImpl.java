@@ -54,13 +54,13 @@ public class CommentPublicServiceImpl implements CommentPublicService {
     @Override
     public CommentDto getCommentByEventAndCommentId(Long eventId, Long commentId) {
         log.info("getCommentByEventAndCommentId - invoked");
-        Comment comment = repository.findByEventIdAndId(eventId, commentId)
+        Comment comment = repository.findById(commentId)
                 .orElseThrow(() -> {
-                    log.error("Comment with eventId = {} and commentId = {} - not exist", eventId, commentId);
+                    log.error("Comment with id = {} does not exist", commentId);
                     return new NotFoundException("Comment not found");
                 });
         if (!comment.getEvent().getId().equals(eventId)) {
-            log.error("Comment with commentId = {} does not belong to event with eventId = {}", commentId, eventId);
+            log.error("Comment with id = {} does not belong to event with id = {}", commentId, eventId);
             throw new NotFoundException("Comment not found for the specified event");
         }
         log.info("Result: comment with eventId= {} and commentId= {}", eventId, commentId);

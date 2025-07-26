@@ -31,6 +31,4 @@ public class EventShortDto {
     Long confirmedRequests;
     Long views;
 
-    public EventShortDto() {
-    }
 }

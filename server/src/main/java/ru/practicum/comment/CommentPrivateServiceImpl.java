@@ -47,6 +47,7 @@ public class CommentPrivateServiceImpl implements CommentPrivateService {
         }
         comment.setAuthor(author);
         comment.setEvent(event);
+        comment.setApproved(true);   // по умолчанию комменты видны, но админ может удалить/вернуть
         comment.setCreateTime(LocalDateTime.now().withNano(0));
         log.info("Result: new comment created");
         return CommentMapper.toCommentDto(repository.save(comment));

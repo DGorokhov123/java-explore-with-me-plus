@@ -4,9 +4,12 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import ru.practicum.category.CategoryDto;
+import ru.practicum.comment.CommentDto;
+import ru.practicum.comment.CommentShortDto;
 import ru.practicum.user.UserShortDto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -41,5 +44,7 @@ public class EventFullDto {
 
     Long confirmedRequests;
     Long views;
+
+    List<CommentShortDto> comments;
 
 }
