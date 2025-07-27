@@ -40,4 +40,8 @@ public class Comment {
 
     @Column(name = "approved", nullable = false)
     Boolean approved;
+
+    public boolean isApproved() {
+        return approved;
+    }
 }
