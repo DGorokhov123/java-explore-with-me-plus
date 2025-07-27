@@ -26,6 +26,7 @@ public class ApiError {
 
     private String message;
 
+    @Builder.Default
     private List<String> errors = new ArrayList<>();
 
     @JsonSerialize(using = LocalDateTimeSerializer.class)

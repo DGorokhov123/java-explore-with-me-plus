@@ -17,6 +17,7 @@ import java.util.Set;
 @AtLeastOneNotNull(fields = {"events", "pinned", "title"}, message = "DTO has only null data fields")
 public class UpdateCompilationDto {
 
+    @Builder.Default
     Set<Long> events = new HashSet<>();
 
     Boolean pinned;
