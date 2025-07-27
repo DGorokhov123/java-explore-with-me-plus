@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import ru.practicum.category.CategoryDto;
-import ru.practicum.comment.CommentDto;
 import ru.practicum.comment.CommentShortDto;
 import ru.practicum.user.UserShortDto;
 
