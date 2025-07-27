@@ -9,9 +9,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.event.repository.EventRepository;
+import ru.practicum.exception.ForbiddenException;
 import ru.practicum.exception.NotFoundException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static ru.practicum.util.Util.createPageRequestAsc;
 
@@ -33,6 +35,10 @@ public class CommentPublicServiceImpl implements CommentPublicService {
                     log.error("Comment with id = {} - not exist", comId);
                     return new NotFoundException("Comment not found");
                 });
+        if (!comment.isApproved()) {
+            log.warn("Comment with id = {} is not approved", comId);
+            throw new ForbiddenException("Comment is not approved");
+        }
         log.info("Result: comment with id= {}", comId);
         return CommentMapper.toCommentDto(comment);
     }
@@ -47,8 +53,11 @@ public class CommentPublicServiceImpl implements CommentPublicService {
         Pageable pageable = createPageRequestAsc("createTime", from, size);
         Page<Comment> commentsPage = repository.findAllByEventId(eventId, pageable);
         List<Comment> comments = commentsPage.getContent();
-        log.info("Result : list of comments size = {}", comments.size());
-        return CommentMapper.toListCommentShortDto(comments);
+        List<Comment> approvedComments = comments.stream()
+                .filter(Comment::isApproved)
+                .collect(Collectors.toList());
+        log.info("Result : list of approved comments size = {}", approvedComments.size());
+        return CommentMapper.toListCommentShortDto(approvedComments);
     }
 
     @Override
@@ -62,6 +71,10 @@ public class CommentPublicServiceImpl implements CommentPublicService {
         if (!comment.getEvent().getId().equals(eventId)) {
             log.error("Comment with id = {} does not belong to event with id = {}", commentId, eventId);
             throw new NotFoundException("Comment not found for the specified event");
+        }
+        if (!comment.isApproved()) {
+            log.warn("Comment with id = {} is not approved", commentId);
+            throw new ForbiddenException("Comment is not approved");
         }
         log.info("Result: comment with eventId= {} and commentId= {}", eventId, commentId);
         return CommentMapper.toCommentDto(comment);
