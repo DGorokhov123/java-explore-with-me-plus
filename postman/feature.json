@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "ac45b06e-7fd4-41e1-9ba2-399ed2f07e5d",
+		"_postman_id": "88864e61-ce56-4bd9-8ae2-18e12943f097",
 		"name": "Feature",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "42356300"
+		"_exporter_id": "42457555"
 	},
 	"item": [
 		{
@@ -27,7 +27,7 @@
 									"    const event = await api.addEvent(user.id, utils.getEvent(category.id));\r",
 									"    pm.collectionVariables.set(\"eventId\", event.id);\r",
 									"    await api.publishEvent(event.id); \r",
-									"    const comment = utils.getComment();\r",
+									"    comment = utils.getComment();\r",
 									"    pm.request.body.update({\r",
 									"        mode: 'raw',\r",
 									"        raw: JSON.stringify(comment),\r",
@@ -170,7 +170,7 @@
 									"    const category = await api.addCategory(utils.getCategory());\r",
 									"    const event = await api.addEvent(user.id, utils.getEvent(category.id));\r",
 									"    pm.collectionVariables.set(\"eventId\", event.id);\r",
-									"    const comment = utils.getComment();\r",
+									"    comment = utils.getComment();\r",
 									"    pm.request.body.update({\r",
 									"        mode: 'raw',\r",
 									"        raw: JSON.stringify(comment),\r",
