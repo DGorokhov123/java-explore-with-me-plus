@@ -63,7 +63,7 @@ public class EventPrivateServiceImpl implements EventPrivateService {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new NotFoundException("Event with id=" + eventId + " was not found"));
 
-        if (!Objects.equals(initiator, event.getInitiator())) {
+        if (!Objects.equals(initiator.getId(), event.getInitiator().getId())) {
             throw new ConflictException("User " + userId + " is not an initiator of event " + eventId, "Forbidden action");
         }
 
@@ -113,7 +113,7 @@ public class EventPrivateServiceImpl implements EventPrivateService {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new NotFoundException("Event with id=" + eventId + " was not found"));
 
-        if (!Objects.equals(initiator, event.getInitiator())) {
+        if (!Objects.equals(initiator.getId(), event.getInitiator().getId())) {
             throw new ConflictException("User " + userId + " is not an initiator of event " + eventId, "Forbidden action");
         }
 

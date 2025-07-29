@@ -1,5 +1,6 @@
 package ru.practicum.comment;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,7 @@ public class CommentPrivateController {
     @PostMapping("/users/{userId}/events/{eventId}/comments")
     public ResponseEntity<CommentDto> create(@PathVariable @Positive Long userId,
                                              @PathVariable @Positive Long eventId,
-                                             @RequestBody @Validated CommentCreateDto commentCreateDto) {
+                                             @RequestBody @Valid CommentCreateDto commentCreateDto) {
         log.info("Calling the GET request to /users/{userId}/events/{eventId}/comment endpoint");
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(service.createComment(userId, eventId, commentCreateDto));
@@ -38,7 +39,7 @@ public class CommentPrivateController {
     @PatchMapping("/users/{userId}/comments/{comId}")
     public ResponseEntity<CommentDto> patch(@PathVariable @Positive Long userId,
                                             @PathVariable @Positive Long comId,
-                                            @RequestBody @Validated CommentCreateDto commentCreateDto) {
+                                            @RequestBody @Valid CommentCreateDto commentCreateDto) {
         log.info("Calling the PATCH request to users/{userId}/comment/{comId} endpoint");
         return ResponseEntity.ok(service.patchComment(userId, comId, commentCreateDto));
     }

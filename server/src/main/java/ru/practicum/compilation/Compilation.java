@@ -9,7 +9,8 @@ import ru.practicum.event.model.Event;
 
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

@@ -20,16 +20,16 @@ public class CommentAdminController {
 
     @GetMapping("/comments/search")
     public ResponseEntity<List<CommentDto>> search(@RequestParam @NotBlank String text,
-                                                   @RequestParam(required = false, defaultValue = "0") int from,
-                                                   @RequestParam(required = false, defaultValue = "10") int size) {
+                                                   @RequestParam(defaultValue = "0") int from,
+                                                   @RequestParam(defaultValue = "10") int size) {
         log.info("Calling the GET request to /admin/comment/search endpoint");
         return ResponseEntity.ok(service.search(text, from, size));
     }
 
     @GetMapping("users/{userId}/comments")
     public ResponseEntity<List<CommentDto>> get(@PathVariable @Positive Long userId,
-                                                @RequestParam(required = false, defaultValue = "0") int from,
-                                                @RequestParam(required = false, defaultValue = "10") int size) {
+                                                @RequestParam(defaultValue = "0") int from,
+                                                @RequestParam(defaultValue = "10") int size) {
         log.info("Calling the GET request to admin/users/{userId}/comment endpoint");
         return ResponseEntity.ok(service.findAllByUserId(userId, from, size));
     }

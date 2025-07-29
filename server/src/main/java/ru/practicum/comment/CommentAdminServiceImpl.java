@@ -62,7 +62,8 @@ public class CommentAdminServiceImpl implements CommentAdminService {
     @Override
     public CommentDto approveComment(Long comId) {
         log.info("approveComment - invoked");
-        Comment comment = repository.findById(comId).orElseThrow(() -> new NotFoundException("Comment not found"));
+        Comment comment = repository.findById(comId)
+                .orElseThrow(() -> new NotFoundException("Comment not found"));
         comment.setApproved(true);
         repository.save(comment);
         log.info("Result: comment with id = {} approved", comId);
