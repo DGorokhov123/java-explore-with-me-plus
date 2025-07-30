@@ -15,8 +15,10 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class NewCompilationDto {
 
+    @Builder.Default
     Set<Long> events = new HashSet<>();
 
+    @Builder.Default
     Boolean pinned = false;
 
     @NotBlank

@@ -45,7 +45,7 @@ public class RequestService {
         }
 
         // инициатор события не может добавить запрос на участие в своём событии (Ожидается код ошибки 409)
-        if (Objects.equals(requester, event.getInitiator())) {
+        if (Objects.equals(requester.getId(), event.getInitiator().getId())) {
             throw new ConflictException("User tries to request for his own event", "Forbidden action");
         }
 
@@ -106,7 +106,7 @@ public class RequestService {
                 .orElseThrow(() -> new NotFoundException("Event with id=" + eventId + " was not found"));
 
         // проверка что юзер - инициатор события
-        if (!Objects.equals(initiator, event.getInitiator())) {
+        if (!Objects.equals(initiator.getId(), event.getInitiator().getId())) {
             throw new ConflictException("User " + userId + " is not an initiator of event " + eventId, "Forbidden action");
         }
 
@@ -129,7 +129,7 @@ public class RequestService {
                 .orElseThrow(() -> new NotFoundException("Event with id=" + eventId + " was not found"));
 
         // проверка что юзер - инициатор события
-        if (!Objects.equals(initiator, event.getInitiator())) {
+        if (!Objects.equals(initiator.getId(), event.getInitiator().getId())) {
             throw new ConflictException("User " + userId + " is not an initiator of event " + eventId, "Forbidden action");
         }
 
